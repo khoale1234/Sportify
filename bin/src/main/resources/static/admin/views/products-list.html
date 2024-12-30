@@ -1,0 +1,390 @@
+<!-- Header -->
+<div ng-include="'/admin/templates/header.html'"></div>
+<!-- /Header -->
+
+<!-- Sidebar -->
+<div ng-include="'/admin/templates/sidebar.html'"></div>
+<!-- /Sidebar -->
+
+<!-- Page Wrapper -->
+<div class="page-wrapper" ng-controller="ProductController">
+
+	<!-- Page Content -->
+	<div class="content container-fluid">
+
+		<!-- Page Header -->
+		<div class="page-header">
+			<div class="row align-items-center">
+				<div class="col">
+					<h3 class="page-title">Sản phẩm</h3>
+					<ul class="breadcrumb">
+						<li class="breadcrumb-item"><a href="/admin/index.html">Dashboard</a></li>
+						<li class="breadcrumb-item active">Sản phẩm</li>
+					</ul>
+				</div>
+				<div class="col-auto float-right ml-auto">
+					<a href="#" class="btn add-btn" data-toggle="modal"
+						data-target="#add" ng-click="reset()"><i class="fa fa-plus"></i>
+						Thêm mới sản phẩm</a>
+				</div>
+			</div>
+		</div>
+		<!-- /Page Header -->
+
+		<!-- Search Filter -->
+		<div class="row filter-row">
+
+			<div class="col-sm-6 col-md-3">
+				<div class="form-group form-focus">
+					<input type="text" class="form-control floating"
+						ng-model="searchName"> <label class="focus-label">Tên sản phẩm</label>
+				</div>
+			</div>
+			<div class="col-sm-6 col-md-3">
+				<div class="form-group form-focus select-focus">
+					<select ng-model="searchCate" class="select floating">
+						<option ng-value=null>Tất cả</option>
+						<option ng-repeat="c in categories" ng-value="c.categoryid">{{c.categoryname}}</option>
+					</select> <label class="focus-label">Loại sản phẩm</label>
+				</div>
+			</div>
+			<div class="col-sm-6 col-md-2">
+				<div class="form-group form-focus select-focus">
+					<select ng-model="searchStatus" class="select floating">
+						<option ng-value=null>Tất cả</option>
+						<option ng-value="1">Đang bán</option>
+						<option ng-value="0">Ngưng bán</option>
+					</select> <label class="focus-label">Trạng thái</label>
+				</div>
+			</div>
+			<div class="col-sm-6 col-md-2">
+				<a href="#" class="btn btn-success btn-block" ng-click="search()">
+					Tìm kiếm </a>
+
+			</div>
+			<div class="col-sm-6 col-md-2">
+				<a href="#" class="btn btn-success btn-block" ng-click="refresh()">
+					Làm mới </a>
+
+			</div>
+
+		</div>
+		<!-- Search Filter -->
+
+		<div class="row">
+			<div class="col-md-12">
+				<div class="table-responsive">
+					<table class="table table-striped custom-table datatable">
+						<thead>
+							<tr>
+								<th>#</th>
+								<th>Loại sản phẩm</th>
+								<th>Tên sản phẩm</th>
+								<th>Hình ảnh</th>
+								<th>Giảm giá</th>
+								<th>Ngày tạo</th>
+								<th>Giá</th>
+								<th>Trạng thái</th>
+								<th>Số lượng</th>
+								<th class="text-center">Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="item in items">
+								<td>{{$index +1}}</td>
+								<td>{{item.categories.categoryname}}</td>
+								<td>{{item.productname}}</td>
+								<td><img src="/user/images/{{item.image}}" width="100px"
+									height="100px"></td>
+								<td>{{item.discountprice}}</td>
+								<td>{{item.datecreate | date : 'dd-MM-yyyy'}}</td>
+								<td>{{formatCurrency(item.price)}}</td>
+								<td>{{item.productstatus?'Đang bán':'Ngưng Bán'}}</td>
+								<td>{{item.quantity}}</td>
+								<td class="text-center">
+									<button class="btn btn-danger btn-block" href="#"
+										data-toggle="modal" data-target="#edit" ng-click="edit(item)">
+										<i class="fa fa-pencil m-r-5"></i> Xem chi tiết
+									</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /Page Content -->
+
+	<!-- Add Employee Modal -->
+	<div id="add" class="modal custom-modal fade" role="dialog">
+		<div class="modal-dialog modal-dialog-centered modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Thêm mới sản phẩm</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form>
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="form-group d-flex justify-content-center">
+									<label for="image" class="col-form-label"> <img
+										ng-src="{{'/user/images/'+form.image}}"
+										style="max-width: 100%; height: 200px">
+									</label>
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label class="col-form-label">Tên sản phẩm <span
+										class="text-danger">*</span></label> <input class="form-control"
+										type="text" ng-model="form.productname" ng-change="clearErrors()">
+										<errors class="badge badge-danger" ng-repeat="(index, error) in errors"
+										ng-if="error.field === 'productname' && index === 0">{{
+										error.message }}</errors>
+								</div>
+							</div>
+
+
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label class="col-form-label">Giảm giá <span
+										class="text-danger">*</span></label> <input class="form-control"
+										type="number" ng-model="form.discountprice" ng-change="clearErrors()">
+										<errors class="badge badge-danger" ng-repeat="(index, error) in errors"
+										ng-if="error.field === 'discountprice' && index === 0">{{
+										error.message }}</errors>
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label class="col-form-label">Hình ảnh<span
+										class="text-danger">*</span></label> <input type="file"
+										class="form-control" id="image" ng-value="form.image"
+										onchange="angular.element(this).scope().imageChanged(this.files)">
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label class="col-form-label">Ngày tạo <span
+										class="text-danger">*</span></label> <input class="form-control"
+										type="date" ng-model="form.datecreate" disabled>
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label class="col-form-label">Trạng thái <span
+										class="text-danger">*</span></label> <select
+										class="form-control" ng-model="form.productstatus">
+										<option ng-value="true">Đang bán</option>
+										<option ng-value="false">Ngừng bán</option>
+									</select>
+								</div>
+							</div>
+
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label class="col-form-label">Số lượng <span
+										class="text-danger">*</span></label> <input type="number"
+										ng-model="form.quantity" class="form-control" ng-change="clearErrors()">
+										<errors class="badge badge-danger" ng-repeat="(index, error) in errors"
+										ng-if="error.field === 'quantity' && index === 0">{{
+										error.message }}</errors>
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label class="col-form-label">Loại sản phẩm <span
+										class="text-danger">*</span></label> <select
+										class="form-control" ng-model="form.categoryid">
+										<option ng-repeat="c in categories" ng-value="c.categoryid">{{c.categoryname}}</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label class="col-form-label">Giá <span
+										class="text-danger">*</span></label> <input type="number"
+										ng-model="form.price" class="form-control" ng-change="clearErrors()">
+										<errors class="badge badge-danger" ng-repeat="(index, error) in errors"
+										ng-if="error.field === 'price' && index === 0">{{
+										error.message }}</errors>
+								</div>
+							</div>
+							<div class="col-sm-12">
+								<div class="form-group">
+									<label class="col-form-label">Mô tả <span
+										class="text-danger">*</span></label>
+									<textarea class="form-control" ng-model="form.descriptions" ng-change="clearErrors()"></textarea>
+									<errors class="badge badge-danger" ng-repeat=" error in errors"
+										ng-if="error.field === 'descriptions' ">{{
+										error.message }}</errors>
+								</div>
+							</div>
+						</div>
+
+						<div class="submit-section">
+							<button class="btn btn-primary submit-btn" ng-click="create()">Thêm sản phẩm</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /Add Employee Modal -->
+
+	<!-- Edit Employee Modal -->
+	<div id="edit" class="modal custom-modal fade" role="dialog">
+		<div class="modal-dialog modal-dialog-centered modal-lg"
+			role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Edit Product</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form>
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="form-group d-flex justify-content-center">
+									<label for="image" class="col-form-label"> <img
+										ng-src="{{'/user/images/'+form.image}}"
+										style="max-width: 100%; height: 200px">
+									</label>
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label class="col-form-label">Tên sản phẩm <span
+										class="text-danger">*</span></label> <input class="form-control"
+										type="text" ng-model="form.productname" ng-change="clearErrors()">
+										<errors class="badge badge-danger" ng-repeat="(index, error) in errors"
+										ng-if="error.field === 'productname' && index === 0">{{
+										error.message }}</errors>
+								</div>
+							</div>
+
+
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label class="col-form-label">Giảm giá <span
+										class="text-danger">*</span></label> <input class="form-control"
+										type="number" ng-model="form.discountprice" ng-change="clearErrors()">
+										<errors class="badge badge-danger" ng-repeat="(index, error) in errors"
+										ng-if="error.field === 'discountprice' && index === 0">{{
+										error.message }}</errors>
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label class="col-form-label">Hình ảnh<span
+										class="text-danger">*</span></label> <input type="file"
+										class="form-control" id="image" ng-value="form.image"
+										onchange="angular.element(this).scope().imageChanged(this.files)">
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label class="col-form-label">Ngày tạo <span
+										class="text-danger">*</span></label> <input class="form-control"
+										type="date" ng-model="form.datecreate" disabled>
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label class="col-form-label">Trạng thái <span
+										class="text-danger">*</span></label> <select
+										class="form-control" ng-model="form.productstatus">
+										<option ng-value="true">Đang bán</option>
+										<option ng-value="false">Ngừng bán</option>
+									</select>
+								</div>
+							</div>
+
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label class="col-form-label">Số lượng <span
+										class="text-danger">*</span></label> <input type="number"
+										ng-model="form.quantity" class="form-control" ng-change="clearErrors()">
+										<errors class="badge badge-danger" ng-repeat="(index, error) in errors"
+										ng-if="error.field === 'quantity' && index === 0">{{
+										error.message }}</errors>
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label class="col-form-label">Loại sản phẩm <span
+										class="text-danger">*</span></label> <select
+										class="form-control" ng-model="form.categoryid">
+										<option ng-repeat="c in categories" ng-value="c.categoryid">{{c.categoryname}}</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label class="col-form-label">Giá <span
+										class="text-danger">*</span></label> <input type="number"
+										ng-model="form.price" class="form-control" ng-change="clearErrors()">
+										<errors class="badge badge-danger" ng-repeat="(index, error) in errors"
+										ng-if="error.field === 'price' && index === 0">{{
+										error.message }}</errors>
+								</div>
+							</div>
+							<div class="col-sm-12">
+								<div class="form-group">
+									<label class="col-form-label">Mô tả <span
+										class="text-danger">*</span></label>
+									<textarea class="form-control" ng-model="form.descriptions" ng-change="clearErrors()"></textarea>
+									<errors class="badge badge-danger" ng-repeat=" error in errors"
+										ng-if="error.field === 'descriptions' ">{{
+										error.message }}</errors>
+								</div>
+							</div>
+						</div>
+
+						<div class="submit-section">
+							<button class="btn btn-primary submit-btn" ng-click="update()">Chỉnh sửa sản phẩm</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /Edit Employee Modal -->
+
+	<!-- Delete Employee Modal -->
+	<div class="modal custom-modal fade" id="delete" role="dialog">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-body">
+					<div class="form-header">
+						<h3>Delete Product</h3>
+						<p>Are you sure want to delete ?</p>
+					</div>
+					<div class="modal-btn delete-action">
+						<div class="row">
+							<div class="col-6">
+								<a href="javascript:void(0);"
+									class="btn btn-primary continue-btn" ng-click="delete(form)">Delete</a>
+							</div>
+							<div class="col-6">
+								<a href="javascript:void(0);" data-dismiss="modal"
+									class="btn btn-primary cancel-btn">Cancel</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /Delete Employee Modal -->
+	<div id="toast"></div>
+</div>
+<!-- /Page Wrapper -->

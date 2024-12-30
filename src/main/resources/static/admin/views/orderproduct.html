@@ -1,0 +1,268 @@
+<!-- Header -->
+<div ng-include="'/admin/templates/header.html'"></div>
+<!-- /Header -->
+
+<!-- Sidebar -->
+<div ng-include="'/admin/templates/sidebar.html'"></div>
+<!-- /Sidebar -->
+
+<!-- Page Wrapper -->
+<div class="page-wrapper" ng-controller="OrderController">
+
+	<!-- Page Content -->
+	<div class="content container-fluid">
+
+		<!-- Page Header -->
+		<div class="page-header">
+			<div class="row align-items-center">
+				<div class="col">
+					<h3 class="page-title">Đơn hàng</h3>
+					<ul class="breadcrumb">
+						<li class="breadcrumb-item"><a href="/admin/index.html">Dashboard</a></li>
+						<li class="breadcrumb-item active">Đơn hàng</li>
+					</ul>
+				</div>
+
+			</div>
+		</div>
+		<!-- /Page Header -->
+
+		<!-- Search Filter -->
+		<div class="row filter-row">
+
+			<div class="col-sm-6 col-md-2">
+				<label class="focus-label">Họ tên người đặt</label>
+				<div class="form-group form-focus">
+					<input type="text" class="form-control floating"
+						ng-model="searchName">
+				</div>
+			</div>
+			<div class="col-sm-6 col-md-2" ng-show="kiemDuyet === 'ok'">
+				<label class="focus-label">Ngày đặt</label>
+				<div class="form-group form-focus">
+					<input type="date" class="form-control floating"
+						ng-model="searchDate">
+				</div>
+			</div>
+			<div class="col-sm-2 col-md-2" ng-show="kiemDuyet === 'ok'">
+				<label class="focus-label">Trạng thái đơn hàng</label>
+				<div class="form-group form-focus select-focus">
+					<select ng-model="searchStatus" class="select floating">
+						<option ng-value="''">Tất cả</option>
+						<option ng-value="'Chờ Xác Nhận'">Chờ Xác Nhận</option>
+						<option ng-value="'Đang Giao'">Đang Giao</option>
+						<option ng-value="'Hoàn Thành'">Hoàn Thành</option>
+						<option ng-value="'Hủy Đặt'">Hủy Đặt</option>
+						<option ng-value="'Trả Hàng'">Trả Hàng</option>
+					</select>
+				</div>
+			</div>
+			<div class="col-sm-2 col-md-2" ng-show="kiemDuyet === 'ok'">
+				<label class="focus-label">Trạng thái thanh toán</label>
+				<div class="form-group form-focus select-focus">
+					<select ng-model="searchPayment" class="select floating">
+						<option ng-value=null>Tất cả</option>
+						<option ng-value=1>Đã thanh toán</option>
+						<option ng-value=0>Chưa thanh toán</option>
+					</select>
+				</div>
+			</div>
+			<div class=" col-md-4 d-flex mt-4">
+				<div class="col-sm-6 col-md-6 mt-1">
+					<a href="#" class="mt-1 btn btn-success btn-block" ng-click="search()">
+						Tìm kiếm </a>
+
+				</div>
+				<div class="col-sm-6 col-md-6 mt-1">
+					<a href="#" class="mt-1 btn btn-success btn-block" ng-click="refresh()">
+						Làm mới </a>
+				</div>
+
+			</div>
+
+
+		</div>
+		<!-- Search Filter -->
+
+		<div class="row">
+			<div class="col-md-12">
+				<div class="table-responsive">
+					<table class="table table-striped custom-table datatable">
+						<thead>
+							<tr>
+								<th>#</th>
+								<th>Người dặt</th>
+								<th>Ngày đặt</th>
+								<th>Địa chỉ giao hàng</th>
+								<th>Trạng thái giao hàng</th>
+								<th>Trạng thái thanh toán</th>
+								<th class="text-center no-sort">Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="item in items">
+								<td>{{$index + 1}}</td>
+								<td>{{item.users.firstname + ' ' + item.users.lastname}}</td>
+								<td>{{item.createdate | date:'dd-MM-yyyy | HH:mm:ss' }}</td>
+								<td>{{item.address}}</td>
+								<td>{{item.orderstatus}}</td>
+								<td>{{item.paymentstatus?'Đã thanh toán':'Chưa thanh toán'}}</td>
+								<td class="text-center">
+
+
+
+									<button class="btn btn-danger btn-block" href="#"
+										data-toggle="modal" data-target="#edit" ng-click="edit(item)">
+										<i class="fa fa-pencil m-r-5"></i> Xem chi tiết
+									</button>
+
+
+								</td>
+							</tr>
+
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /Page Content -->
+
+	<!-- Edit Employee Modal -->
+	<div id="edit" class="modal custom-modal fade" role="dialog">
+		<div class="modal-dialog modal-dialog-centered modal-lg"
+			style="max-width: 1300px;" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Chi tiết phiếu đặt hàng</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form>
+						<div class="row">
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label class="col-form-label">Mã phiếu <span
+										class="text-danger">*</span></label> <input class="form-control"
+										type="text" ng-model="form.orderid" readonly>
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label class="col-form-label">Người đặt</label><span
+										class="text-danger">*</span></label> <input class="form-control"
+										type="text"
+										ng-model="form.users.firstname + ' ' + form.users.lastname"
+										readonly>
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label class="col-form-label">Ngày đặt <span
+										class="text-danger">*</span></label> <input class="form-control"
+										type="text"
+										ng-model="form.createdate | date:'dd-MM-yyyy | HH:mm:ss'"
+										readonly>
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label class="col-form-label">Địa chỉ <span
+										class="text-danger">*</span></label> <input class="form-control"
+										type="email" ng-model="form.address" readonly>
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label class="col-form-label">Trạng thái đặt hàng<span
+										class="text-danger">*</span></label> <select class="form-control"
+										ng-model="form.orderstatus">
+										<option ng-value="'Trả Hàng'">Trả Hàng</option>
+										<option ng-value="'Hoàn Thành'">Hoàn Thành</option>
+										<option ng-value="'Hủy Đặt'">Hủy Đặt</option>
+										<option ng-value="'Đang Giao'">Đang Giao</option>
+										<option ng-value="'Chờ Xác Nhận'">Chờ Xác Nhận</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label class="col-form-label">Trạng thái thanh toán<span
+										class="text-danger">*</span></label> <select class="form-control"
+										ng-model="form.paymentstatus">
+										<option ng-value="true">Đã thanh toán</option>
+										<option ng-value="false">Chưa thanh toán</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-sm-12">
+								<div class="form-group">
+									<label class="col-form-label">Thành tiền <span
+										class="text-danger">*</span></label> <input class="form-control"
+										type="text" ng-model="formatCurrency(form.totalprice)" readonly>
+								</div>
+							</div>
+							<div class="col-sm-12">
+								<div class="form-group">
+									<label class="col-form-label">Ghi chú</label>
+									<textarea class="form-control" type="text" ng-model="form.note"
+										readonly></textarea>
+								</div>
+							</div>
+
+
+
+						</div>
+						<div class="col-md-12 d-flex">
+							<div class="card card-table flex-fill">
+
+								<div class="card-body">
+									<div class="table-responsive">
+										<table class="table table-nowrap custom-table mb-0">
+											<thead>
+												<tr>
+													<th>#</th>
+													<th>Tên sản phảm</th>
+													<th>Giá</th>
+													<th>Số lượng</th>
+													<th>Tổng tiền</th>
+													
+
+												</tr>
+											</thead>
+											<tbody>
+												<tr ng-repeat="o in orderdetail">
+													<td>{{$index + 1}}</td>
+													<td>{{o.products.productname}}</td>
+													<td>{{formatCurrency(o.price)}}</td>
+													<td>{{o.quantity}}</td>
+													<td>{{formatCurrency(o.price * o.quantity)}}</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="submit-section">
+							<button class="btn btn-success submit-btn" ng-click="confirmOrder()" ng-show="form.orderstatus == 'Chờ Xác Nhận' ">Xác nhận đơn hàng</button>
+							<button class="btn btn-danger submit-btn" ng-click="cancelOrder()" ng-show="form.orderstatus == 'Chờ Xác Nhận' ">Hủy đơn hàng</button>
+							<button class="btn btn-info submit-btn" ng-click="update()">Chỉnh sửa đơn hàng</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /Edit Employee Modal -->
+
+
+
+
+	<div id="toast"></div>
+</div>
+<!-- /Page Wrapper -->

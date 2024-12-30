@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+
+<head>
+	<!-- Chart CSS -->
+	<link rel="stylesheet" href="/admin/assets/plugins/morris/morris.css">
+
+	<!-- Main CSS -->
+	<link rel="stylesheet" href="/admin/assets/css/style.css">
+
+	<!-- Datatable CSS -->
+	<link rel="stylesheet" href="/admin/assets/css/dataTables.bootstrap4.min.css">
+
+	<!-- Datetimepicker CSS -->
+	<link rel="stylesheet" href="/admin/assets/css/bootstrap-datetimepicker.min.css">
+
+	<!-- Slimscroll JS -->
+	<script src="/admin/assets/js/jquery.slimscroll.min.js"></script>
+
+	<!-- Chart JS -->
+	<script src="/admin/assets/plugins/morris/morris.min.js"></script>
+	<script src="/admin/assets/plugins/raphael/raphael.min.js"></script>
+	<script src="/admin/assets/js/chart.js"></script>
+
+	<!-- Select2 JS -->
+	<script src="/assets/js/select2.min.js"></script>
+
+	<!-- Datetimepicker JS -->
+	<script src="/admin/assets/js/moment.min.js"></script>
+	<script src="/admin/assets/js/bootstrap-datetimepicker.min.js"></script>
+
+	<!-- Datatable JS -->
+	<script src="/admin/assets/js/jquery.dataTables.min.js"></script>
+	<script src="/admin/assets/js/dataTables.bootstrap4.min.js"></script>
+
+	<!-- Custom JS -->
+	<script src="/admin/assets/js/app.js"></script>
+	<script src="https://kit.fontawesome.com/88561e5a9a.js" crossorigin="anonymous"></script>
+	<base href="/">
+</head>
+
+
+<body>
+	<!-- Sidebar -->
+	<div class="sidebar" id="sidebar">
+		<div class="sidebar-inner slimscroll">
+			<div id="sidebar-menu" class="sidebar-menu">
+				<ul>
+					<li>
+						<a href="/admin/index.html"><i class="fa-solid fa-gauge-high"></i> <span> &nbsp;Dashboard</span> </a>
+
+					</li>
+					<li>
+						<a href="/admin/products"><i class="fa-solid fa-store"></i> <span> &nbsp;Sản phẩm</span> </a>
+					</li>
+					
+					<li>
+						<a href="/admin/fields"><i class="fa-solid fa-futbol"></i>	 <span> &nbsp;Sân</span> </a>
+
+					</li>
+					<li>
+						<a href="/admin/accounts"><i class="fa-solid fa-users-gear"></i> <span> &nbsp;Quản lý tài khoản</span> </a>
+
+					</li>
+
+					<li>
+						<a href="/admin/events"><i class="fa-solid fa-blog"></i><span>&nbsp; Tin tức</span> </a>
+
+					</li>
+					<li class="submenu">
+						<a href="#"><i class="fa-solid fa-pen"></i><span> &nbsp;Khác </span> <span class="menu-arrow"></span></a>
+						<ul style="display: none;">
+							<li><a href="/admin/vouchers"><i class="fa-solid fa-gift"></i><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Mã giảm giá</span></a></li>
+							<li><a href="/admin/contacts"><i class="fa-solid fa-comments"></i><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Liên hệ</span></a></li>
+						</ul>
+					</li>
+					<li class="submenu">
+						<a href="#"><i class="fa-solid fa-bullhorn"></i> <span> &nbsp;Quản lý phiếu đặt </span> <span
+								class="menu-arrow"></span></a>
+						<ul style="display: none;">
+							<li><a href="/admin/bookings"><i class="fa-solid fa-ticket"></i><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Lịch đặt sân</span></a></li>
+							<li><a href="/admin/order-products"><i class="fa-solid fa-receipt"></i><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Đơn hàng</span></a></li>
+						</ul>
+					</li>
+					<li class="submenu">
+						<a href="#"><i class="fa-solid fa-boxes-stacked"></i> <span> &nbsp;Quản lý thể loại </span> <span
+								class="menu-arrow"></span></a>
+						<ul style="display: none;">
+							<li><a href="/admin/category-product"><i class="fa-solid fa-vest-patches"></i><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Loại sản phẩm</span></a></li>
+							<li><a href="/admin/category-sport"><i class="fa-solid fa-spa"></i><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Loại thể thao</span></a></li>
+						</ul>
+					</li>
+					<li class="submenu">
+						<a href="#"><i class="fa-solid fa-chart-column"></i> <span> &nbsp;Báo cáo thống kê </span> <span
+								class="menu-arrow"></span></a>
+						<ul style="display: none;">
+							<li><a href="/admin/reportBooking"><i class="fa-solid fa-chart-line"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Thống kê đặt sân</a></li>
+							<li><a href="/admin/reportOrder"><i class="fa-solid fa-chart-area"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Thống kê bán hàng</a></li>
+						</ul>
+					</li>
+
+				</ul>
+			</div>
+		</div>
+	</div>
+	<!-- /Sidebar -->
+</body>
+
+</html>

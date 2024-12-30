@@ -1,0 +1,322 @@
+<!-- Header -->
+<div ng-include="'/admin/templates/header.html'"></div>
+<!-- /Header -->
+
+<!-- Sidebar -->
+<div ng-include="'/admin/templates/sidebar.html'"></div>
+<!-- /Sidebar -->
+
+<!-- Page Wrapper -->
+<div class="page-wrapper" ng-controller="EventController">
+
+	<!-- Page Content -->
+	<div class="content container-fluid">
+
+		<!-- Page Header -->
+		<div class="page-header">
+			<div class="row align-items-center">
+				<div class="col">
+					<h3 class="page-title">Sự kiện</h3>
+					<ul class="breadcrumb">
+						<li class="breadcrumb-item"><a href="/admin/index.html">Dashboard</a></li>
+						<li class="breadcrumb-item active">Sự kiện</li>
+					</ul>
+				</div>
+				<div class="col-auto float-right ml-auto">
+					<a href="#" class="btn add-btn" data-toggle="modal"
+						data-target="#add" ng-click="reset()"><i class="fa fa-plus"></i>
+						Thêm sự kiện mới</a>
+
+				</div>
+			</div>
+		</div>
+		<!-- /Page Header -->
+
+		<!-- Search Filter -->
+		<div class="row filter-row">
+
+			<div class="col-sm-6 col-md-3">
+				<div class="form-group form-focus">
+					<input type="text" class="form-control floating"
+						ng-model="searchName"> <label class="focus-label">Tên
+						sư kiện</label>
+				</div>
+			</div>
+			<div class="col-sm-6 col-md-3">
+				<div class="form-group form-focus select-focus">
+					<select ng-model="searchStyte" class="select floating">
+						<option ng-value=null>Tất cả</option>
+						<option ng-value="'Bóng đá'">Bóng đá</option>
+						<option ng-value="'Cầu lông'">Cầu lông</option>
+						<option ng-value="'Bóng rổ'">Bóng rổ</option>
+						<option ng-value="'Tennis'">Tennis</option>
+						<option ng-value="'Bảo trì'">Bảo trì</option>
+					</select> <label class="focus-label">Loại sự kiện</label>
+				</div>
+			</div>
+
+			<div class="col-sm-6 col-md-3">
+				<a href="#" class="btn btn-success btn-block" ng-click="search()">
+					Tìm kiếm </a>
+			</div>
+			<div class="col-sm-6 col-md-3">
+				<a href="#" class="btn btn-success btn-block" ng-click="refresh()"> Làm mới </a>
+			</div>
+		</div>
+		<!-- Search Filter -->
+
+		<div class="row">
+			<div class="col-md-12">
+				<div class="table-responsive">
+					<table class="table table-striped custom-table datatable">
+						<thead>
+							<tr>
+								<th>#</th>
+								<th>Tên sự kiện</th>
+								<th>Ảnh sự kiện</th>
+								<th>Ngày bắt đầu</th>
+								<th>Ngày két thúc</th>
+								<th>Loại sự kiện</th>
+								<th class="text-right no-sort">Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="item in items">
+								<td>{{$index + 1}}</td>
+								<td>{{item.nameevent}}</td>
+								<td><img src="/user/images/{{item.image}}" width="100px"
+									height="100px"></td>
+								<td>{{item.datestart | date : 'dd-MM-yyyy'}}</td>
+								<td>{{item.dateend | date : 'dd-MM-yyyy'}}</td>
+								<td>{{item.eventtype}}</td>
+								<td class="text-right">
+									<div class="dropdown dropdown-action">
+										<a href="#" class="action-icon dropdown-toggle"
+											data-toggle="dropdown" aria-expanded="false"><i
+											class="material-icons">more_vert</i></a>
+										<div class="dropdown-menu dropdown-menu-right">
+											<a class="dropdown-item" href="#" data-toggle="modal"
+												data-target="#edit" ng-click="edit(item)"><i
+												class="fa fa-pencil m-r-5"></i> Chỉnh sửa</a> <a
+												class="dropdown-item" href="#" data-toggle="modal"
+												data-target="#delete" ng-click="edit(item)"><i
+												class="fa fa-trash-o m-r-5"></i> Xóa</a>
+										</div>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /Page Content -->
+
+	<!-- Add Employee Modal -->
+	<div id="add" class="modal custom-modal fade" role="dialog">
+		<div class="modal-dialog modal-dialog-centered modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Tạo sự kiện mới</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form>
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="form-group d-flex justify-content-center">
+									<label for="image" class="col-form-label"> <img
+										ng-src="{{'/user/images/'+form.image}}"
+										style="max-width: 100%; height: 200px">
+									</label>
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label class="col-form-label">Tên sự kiện <span
+										class="text-danger">*</span></label> <input class="form-control"
+										type="text" ng-model="form.nameevent"
+										ng-change="clearErrors()">
+									<errors class="badge badge-danger" ng-repeat="(index, error) in errors"
+										ng-if="error.field === 'nameevent' && index === 0">{{
+										error.message }}</errors>
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label class="col-form-label">Ảnh sự kiện<span
+										class="text-danger">*</span></label> <input type="file"
+										class="form-control" id="image" ng-value="form.image"
+										onchange="angular.element(this).scope().imageChanged(this.files)">
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label class="col-form-label">Ngày bắt đầu <span
+										class="text-danger">*</span></label> <input class="form-control"
+										type="date" ng-model="form.datestart">
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label class="col-form-label">Ngày kết thúc <span
+										class="text-danger">*</span></label> <input class="form-control"
+										type="date" ng-model="form.dateend">
+								</div>
+							</div>
+							<div class="col-sm-12">
+								<div class="form-group">
+									<label class="col-form-label">Loại sự kiện</label> <select
+										ng-model="form.eventtype" class="form-control">
+										<option ng-repeat="c in tableData" ng-value="c.name">{{c.name}}</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-sm-12">
+								<div class="form-group">
+									<label class="col-form-label">Description</label>
+									<textarea class="form-control" type="text"
+										ng-model="form.descriptions" ng-change="clearErrors()"></textarea>
+									<errors class="badge badge-danger" ng-repeat="error in errors"
+										ng-if="error.field === 'descriptions' ">{{
+									error.message }}</errors>
+								</div>
+							</div>
+
+
+
+						</div>
+
+
+						<div class="submit-section">
+							<button class="btn btn-primary submit-btn" ng-click="create()">Thêm sự kiện mới</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /Add Employee Modal -->
+
+	<!-- Edit Employee Modal -->
+	<div id="edit" class="modal custom-modal fade" role="dialog">
+		<div class="modal-dialog modal-dialog-centered modal-lg"
+			role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Edit Event</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form>
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="form-group d-flex justify-content-center">
+									<label for="image" class="col-form-label"> <img
+										ng-src="{{'/user/images/'+form.image}}"
+										style="max-width: 100%; height: 200px">
+									</label>
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label class="col-form-label">Tên sự kiện <span
+										class="text-danger">*</span></label> <input class="form-control"
+										type="text" ng-model="form.nameevent"
+										ng-change="clearErrors()">
+									<errors class="badge badge-danger" ng-repeat="(index, error) in errors"
+										ng-if="error.field === 'nameevent' && index === 0">{{
+										error.message }}</errors>
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label class="col-form-label">Ảnh sự kiện<span
+										class="text-danger">*</span></label> <input type="file"
+										class="form-control" id="image" ng-value="form.image"
+										onchange="angular.element(this).scope().imageChanged(this.files)">
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label class="col-form-label">Ngày bắt đầu <span
+										class="text-danger">*</span></label> <input class="form-control"
+										type="date" ng-model="form.datestart">
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label class="col-form-label">Ngày kết thúc <span
+										class="text-danger">*</span></label> <input class="form-control"
+										type="date" ng-model="form.dateend">
+								</div>
+							</div>
+							<div class="col-sm-12">
+								<div class="form-group">
+									<label class="col-form-label">Loại sự kiện</label> <select
+										ng-model="form.eventtype" class="form-control">
+										<option ng-repeat="c in tableData" ng-value="c.name">{{c.name}}</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-sm-12">
+								<div class="form-group">
+									<label class="col-form-label">Description</label>
+									<textarea class="form-control" type="text"
+										ng-model="form.descriptions" ng-change="clearErrors()"></textarea>
+									<errors class="badge badge-danger" ng-repeat="error in errors"
+										ng-if="error.field === 'descriptions' ">{{
+									error.message }}</errors>
+								</div>
+							</div>
+
+
+
+						</div>
+
+						<div class="submit-section">
+							<button class="btn btn-primary submit-btn" ng-click="update()">Chỉnh sửa sự kiện</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /Edit Employee Modal -->
+
+	<!-- Delete Employee Modal -->
+	<div class="modal custom-modal fade" id="delete" role="dialog">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-body">
+					<div class="form-header">
+						<h3>Xóa Sự Kiện</h3>
+						<p>Bạn có muốn xóa sự kiện tên <strong>{{form.nameevent}}</strong> không?</p>
+					</div>
+					<div class="modal-btn delete-action">
+						<div class="row">
+							<div class="col-6">
+								<a href="javascript:void(0);"
+									class="btn btn-primary continue-btn" ng-click="delete(form)">Xóa</a>
+							</div>
+							<div class="col-6">
+								<a href="javascript:void(0);" data-dismiss="modal"
+									class="btn btn-primary cancel-btn">Hủy</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /Delete Employee Modal -->
+	<div id="toast"></div>
+</div>
+<!-- /Page Wrapper -->

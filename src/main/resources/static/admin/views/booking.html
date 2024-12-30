@@ -1,0 +1,246 @@
+<!-- Header -->
+<div ng-include="'/admin/templates/header.html'"></div>
+<!-- /Header -->
+
+<!-- Sidebar -->
+<div ng-include="'/admin/templates/sidebar.html'"></div>
+<!-- /Sidebar -->
+
+<!-- Page Wrapper -->
+<div class="page-wrapper" ng-controller="BookingController">
+
+	<!-- Page Content -->
+	<div class="content container-fluid">
+
+		<!-- Page Header -->
+		<div class="page-header">
+			<div class="row align-items-center">
+				<div class="col">
+					<h3 class="page-title">Phiếu đặt sân</h3>
+					<ul class="breadcrumb">
+						<li class="breadcrumb-item"><a href="/admin/index.html">Dashboard</a></li>
+						<li class="breadcrumb-item active">Phiếu đặt sân</li>
+					</ul>
+				</div>
+
+			</div>
+		</div>
+		<!-- /Page Header -->
+
+		<!-- Search Filter -->
+		<div class="row filter-row">
+
+			<div class="col-sm-6 col-md-3">
+				<label class="focus-label">Họ tên người đặt</label>
+				<div class="form-group form-focus">
+					<input type="text" class="form-control floating"
+						ng-model="keyword" placeholder="Nhập họ hoặc tên">
+				</div>
+			</div>
+			<div class="col-sm-6 col-md-3" ng-show="kiemDuyet === 'ok'">
+				<label class="focus-label">Ngày đặt</label>
+				<div class="form-group form-focus">
+					<input type="date" class="form-control floating"
+						ng-model="datebook">
+				</div>
+			</div>
+			<div class="col-sm-6 col-md-3" ng-show="kiemDuyet === 'ok'">
+				<label class="focus-label">Trạng thái</label>
+				<div class="form-group form-focus select-focus">
+
+					<select ng-model="status" class="select floating">
+						<option ng-value="''">Tất cả</option>
+						<option ng-value="'Đã Cọc'">Đã Cọc</option>
+						<option ng-value="'Hoàn Thành'">Hoàn Thành</option>
+						<option ng-value="'Hủy Đặt'">Hủy Đặt</option>
+					</select>
+				</div>
+			</div>
+			<div class=" col-md-3 d-flex mt-4">
+				<div class="col-sm-6 col-md-6 mt-1">
+					<a href="#" class="mt-1 btn btn-success btn-block" ng-click="search()">
+						Tìm kiếm </a>
+
+				</div>
+				<div class="col-sm-6 col-md-6 mt-1">
+					<a href="#" class="mt-1 btn btn-success btn-block" ng-click="refresh()">
+						Làm mới </a>
+				</div>
+
+			</div>
+
+
+		</div>
+		<!-- Search Filter -->
+
+		<div class="row">
+			<div class="col-md-12">
+				<div class="table-responsive">
+					<table class="table table-striped custom-table datatable">
+						<thead>
+							<tr>
+								<th>#</th>
+								<th>Người dặt</th>
+								<th>Ngày đặt</th>
+								<th>Thành tiền</th>
+								<th>Số điện thoại</th>
+								<th>Trạng thái</th>
+								<th class="text-center no-sort">Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="item in items">
+								<td>{{$index + 1}}</td>
+								<td>{{item.users.firstname + ' ' + item.users.lastname}}</td>
+								<td>{{item.bookingdate | date:'dd-MM-yyyy | HH:mm:ss' }}</td>
+								<td>{{formatCurrency(item.bookingprice)}}</td>
+								<td>{{item.phone}}</td>
+								<td>{{item.bookingstatus}}</td>
+								<td class="text-center">
+
+
+
+									<button class="btn btn-danger btn-block" href="#"
+										data-toggle="modal" data-target="#edit" ng-click="edit(item)">
+										<i class="fa fa-pencil m-r-5"></i> Xem chi tiết
+									</button>
+
+
+								</td>
+							</tr>
+
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /Page Content -->
+
+	<!-- Edit Employee Modal -->
+	<div id="edit" class="modal custom-modal fade" role="dialog">
+		<div class="modal-dialog modal-dialog-centered modal-lg"
+			style="max-width: 1300px;" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Chi tiết phiếu đặt sân</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form>
+						<div class="row">
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label class="col-form-label">Mã phiếu <span
+										class="text-danger">*</span></label> <input class="form-control"
+										type="text" ng-model="form.bookingid" readonly>
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label class="col-form-label">Người đặt</label><span
+										class="text-danger">*</span></label> <input class="form-control"
+										type="text"
+										ng-model="form.users.firstname + ' ' + form.users.lastname"
+										readonly>
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label class="col-form-label">Ngày đặt <span
+										class="text-danger">*</span></label> <input class="form-control"
+										type="text"
+										ng-model="form.bookingdate | date:'dd-MM-yyyy | HH:mm:ss'"
+										readonly>
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label class="col-form-label">Số điện thoại <span
+										class="text-danger">*</span></label> <input class="form-control"
+										type="email" ng-model="form.phone" readonly>
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label class="col-form-label">Trạng thái <span
+										class="text-danger">*</span></label> <select class="form-control"
+										ng-model="form.bookingstatus">
+										<option ng-value="'Đã Cọc'">Đã Cọc</option>
+										<option ng-value="'Hoàn Thành'">Hoàn Thành</option>
+										<option ng-value="'Hủy Đặt'">Hủy Đặt</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label class="col-form-label">Thành tiền <span
+										class="text-danger">*</span></label> <input class="form-control"
+										type="email" ng-model="form.bookingprice" readonly>
+								</div>
+							</div>
+							<div class="col-sm-12">
+								<div class="form-group">
+									<label class="col-form-label">Ghi chú</label>
+									<textarea class="form-control" type="text" ng-model="form.note"
+										readonly></textarea>
+								</div>
+							</div>
+
+
+
+						</div>
+						<div class="col-md-12 d-flex">
+							<div class="card card-table flex-fill">
+
+								<div class="card-body">
+									<div class="table-responsive">
+										<table class="table table-nowrap custom-table mb-0">
+											<thead>
+												<tr>
+													<th>#</th>
+													<th>Tên sân</th>
+													<th>Ngày chơi</th>
+													<th>Ca</th>
+													<th>Số tiền đã cọc</th>
+													<th>Số tiền còn lại</th>
+
+												</tr>
+											</thead>
+											<tbody>
+												<tr ng-repeat="b in bookingdetail">
+													<td>{{$index + 1}}</td>
+													<td>{{b.field.namefield}}</td>
+													<td>{{b.playdate | date:'dd-MM-yyyy'}}</td>
+													<td>{{b.shifts.nameshift}}</td>
+													<td>{{formatCurrency(form.bookingprice * 0.3)}}</td>
+													<td>{{formatCurrency(form.bookingprice -
+														(form.bookingprice * 0.3))}}</td>
+
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="submit-section">
+							<button class="btn btn-primary submit-btn" ng-click="update()">Chỉnh sửa phiếu đặt sân</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /Edit Employee Modal -->
+
+
+
+
+	<div id="toast"></div>
+</div>
+<!-- /Page Wrapper -->

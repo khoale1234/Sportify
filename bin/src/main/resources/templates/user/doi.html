@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>SPORTIFY - Đội</title>
+<link rel="icon" href="/user/images/logotitle.png" type="image/x-icon">
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<link
+	href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,200;0,300;0,400;0,500;0,700;0,800;1,200;1,300;1,400;1,500;1,700&display=swap"
+	rel="stylesheet">
+
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.min.css">
+<link rel="stylesheet" href="/user/css/animate.css">
+
+<link rel="stylesheet" href="/user/css/owl.carousel.min.css">
+<link rel="stylesheet" href="/user/css/owl.theme.default.min.css">
+<link rel="stylesheet" href="/user/css/magnific-popup.css">
+<link rel="stylesheet" href="/user/css/flaticon.css">
+<link rel="stylesheet" href="/user/css/style.css">
+<style>
+body {
+	background-image: url('/user/images/bgAll.png');
+	background-repeat: repeat;
+	background-size: 100% 100%;
+}
+</style>
+</head>
+<body>
+
+	<div class="wrap" style="z-index: 9; position: relative">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-6 d-flex align-items-center">
+					<div class="social-media mr-4 m-1">
+						<p class="mb-0 d-flex">
+							<a href="#"
+								class="d-flex align-items-center justify-content-center"><span
+								class="fa fa-facebook"><i class="sr-only">Facebook</i></span></a> <a
+								href="#"
+								class="d-flex align-items-center justify-content-center"><span
+								class="fa fa-twitter"><i class="sr-only">Twitter</i></span></a> <a
+								href="#"
+								class="d-flex align-items-center justify-content-center"><span
+								class="fa fa-instagram"><i class="sr-only">Instagram</i></span></a>
+							<a href="#"
+								class="d-flex align-items-center justify-content-center"><span
+								class="fa fa-dribbble"><i class="sr-only">Dribbble</i></span></a>
+						</p>
+					</div>
+					<p class="mb-0 phone pl-md-2">
+						<a href="#" class="mr-2"><span class="fa fa-phone mr-1"></span>
+							+00 1234 567</a> <a href="#"><span class="fa fa-paper-plane mr-1"></span>
+							youremail@email.com</a>
+					</p>
+
+				</div>
+
+				<div class="col-md-6 d-flex justify-content-md-end">
+					<!-- check login -->
+					<!-- Thẻ div để hiển thị khi chưa đăng nhập -->
+					<div th:if="${users == null}" class="reg m-1"
+						style="display: block;">
+						<p class="mb-0">
+							<a th:href="@{/sportify/login}" class="mr-2"
+								style="color: white;">Đăng nhập |</a> <a
+								th:href="@{/sportify/signup}" style="color: white;">Đăng kí</a>
+						</p>
+					</div>
+
+					<!-- Thẻ div để hiển thị khi đã đăng nhập -->
+					<span th:if="${users != null}" class="m-1 mr-2"
+						style="color: white;">Xin chào !</span>
+					<div th:if="${users != null}" class="dropdown m-1"
+						style="display: block;">
+						<a class="dropdown-toggle " id="dropdownMenuAccount"
+							data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<img th:if=${users.image!=null}
+							class="rounded-circle border border-white"
+							th:src="@{'/user/images/' + ${users.image}}" alt=""
+							style="width: 30px; height: 30px;"> <img
+							th:if=${users.image==null}
+							class="rounded-circle border border-white"
+							src="/user/images/noavatar.jpg" alt=""
+							style="width: 30px; height: 30px;"> <span id="nameuser"
+							th:text="${users.firstname} + ' ' + ${users.lastname}"></span>
+						</a>
+						<div class="ml-3 mt-2 dropdown-menu"
+							aria-labelledby="dropdownMenuButton">
+							<a th:href="@{/sportify/profile}" class="dropdown-item">Thông
+								tin</a> <a th:href="@{/sportify/field/profile/historybooking}"
+								class="dropdown-item" href="#">Lịch sử đặt sân</a><a
+								th:href="@{/sportify/order/historyList}" class="dropdown-item"
+								href="#">Lịch sử đặt hàng</a> <a
+								th:if="${authorized.roleid== 'R01' or authorized.roleid== 'R02'}"
+								th:href="@{/sportify/admin}" class="dropdown-item">Quản trị</a>
+							<a th:href="@{/sportify/logoff}" class="dropdown-item">Đăng
+								xuất</a>
+						</div>
+					</div>
+
+					<!-- end check login -->
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<nav
+		class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light"
+		id="ftco-navbar">
+		<div class="container">
+			<a class="navbar-brand" th:href="@{/sportify}"><img
+				src="/user/images/Logo3.png" style="width: 350px;" alt=""></a>
+
+			<button class="navbar-toggler" type="button" data-toggle="collapse"
+				data-target="#ftco-nav" aria-controls="ftco-nav"
+				aria-expanded="false" aria-label="Toggle navigation">
+				<span class="oi oi-menu"></span> Menu
+			</button>
+
+			<div class="collapse navbar-collapse" id="ftco-nav">
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item"><a th:href="@{/sportify/field}"
+						class="nav-link">Sân</a></li>
+					<li class="nav-item"><a th:href="@{/sportify/team}"
+						class="nav-link">Đội</a></li>
+					<li class="nav-item"><a th:href="@{/sportify/event}"
+						class="nav-link">Tin Tức</a></li>
+					<li class="nav-item"><a th:href="@{/sportify/product}"
+						class="nav-link">Cửa hàng</a></li>
+					<li class="nav-item"><a th:href="@{/sportify/about}"
+						class="nav-link">Về chúng tôi</a></li>
+					<li class="nav-item"><a th:href="@{/sportify/contact}"
+						class="nav-link">Liên hệ</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<!-- END nav -->
+
+	<section class="hero-wrap hero-wrap-2"
+		style="background-image: url('/user/images/bg-team.png');"
+		data-stellar-background-ratio="0.5">
+		<div class="overlay"></div>
+		<div class="container">
+			<div
+				class="row no-gutters slider-text align-items-end justify-content-center">
+				<div class="col-md-9 ftco-animate mb-5 text-center">
+					<p class="breadcrumbs mb-0">
+						<span class="mr-2"><a th:href="@{/sportify}">Trang Chủ
+								<i class="fa fa-chevron-right"></i>
+						</a></span> <span> <a th:href="@{/sportify/team}">Đội/Nhóm <i
+								class="fa fa-chevron-right"></i></a></span>
+					</p>
+					<h2 class="mb-0 bread">Đội/Nhóm</h2>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Đoạn mã để hiển thị thông báo nếu có -->
+	<div class="col-12 fixed-top" id="messageDiv" th:if="${message}"
+		style="display: none;">
+		<div class="col-3 alert alert-success"
+			style="position: fixed; top: 0px; right: 0px; z-index: 9999; font-size: 20px;">
+			<p th:text="${message}"></p>
+
+		</div>
+	</div>
+	<div class="col-12 fixed-top" id="messageDiv1" th:if="${message1}"
+		style="display: none;">
+		<div class="col-3 alert alert-danger "
+			style="position: fixed; top: 0px; right: 0px; z-index: 9999; font-size: 20px;">
+			<p th:text="${message1}"></p>
+
+		</div>
+	</div>
+
+
+
+
+	<section class="ftco-section">
+		<div class="container">
+			<div class="row">
+				<!-- Lấy giá trị searchText trả về trang /sportify/team/search với method="post" -->
+				<form th:action="@{/sportify/team/search}" method="post"
+					class="mb-0 d-flex justify-content-center col-md-12">
+					<input th:value="${searchText}" value="" name="searchText"
+						class="form-control me-2 col-6" type="search"
+						placeholder="Tìm kiếm theo tên" aria-label="Search">
+					<button class="btn btn-success col-2" type="submit">Search</button>
+				</form>
+				<!-- Hiển thị thông báo kết quả tìm kiếm( KQ > 0 ) -->
+				<div class="d-flex justify-content-center col-md-12 mt-1">
+					<div class="mr-4 col-md-8" th:if="${FoundMessage}"
+						th:text="${FoundMessage}"></div>
+				</div>
+
+				<div class="row col-md-12 ml-5 mt-4">
+					<div class="row col-md-12 mb-1">
+						<div
+							class="col-md-12 d-flex justify-content-between align-items-center">
+							<div>
+								<h4 class="product-select">Lọc theo môn thể thao</h4>
+								<div class="dropdown filter">
+									<button class="btn btn-success dropdown-toggle col-md-8 mb-3"
+										type="button" id="dropdownMenuButton" data-toggle="dropdown"
+										aria-haspopup="true" aria-expanded="false">Lọc</button>
+
+									<!-- Đỗ bộ lọc và lấy giá trị sporttypeid về để lọc-->
+									<div class="dropdown-menu filter-item"
+										aria-labelledby="dropdownMenuButton">
+										<a th:href="@{/sportify/team}" class="dropdown-item">Tất
+											cả</a>
+
+										<form th:action="@{/sportify/team/findTeamUsername}"
+											method="post">
+											<input type="hidden" value="TeamUsername" name="TeamUsername">
+											<button type="submit" class="dropdown-item">Team của
+												tôi</button>
+										</form>
+
+										<a th:each="spt : ${sporttypeList}"
+											th:href="@{/sportify/team/{sporttypeid}(sporttypeid=${spt.sporttypeid})}"
+											th:value="${spt.sporttypeid}" class="dropdown-item"
+											th:text="${spt.categoryname}"></a>
+									</div>
+								</div>
+							</div>
+							<button class="btn btn-success col-2 pt-2 pb-2" type="button"
+								id="createTeamButton">Tạo đội</button>
+						</div>
+					</div>
+					<!-- Hiển thị thông báo tìm kiếm khi KQ =0 -->
+					<div class="col-md-12" th:if="${notFoundMessage}"
+						th:text="${notFoundMessage}"></div>
+
+
+					<div class="col-12 addteam d-none" id="createModal">
+						<div class="col-6" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title">Điền thông tin để tạo nhóm.</h5>
+									<button type="button" class="close" id="closeCreateButton">
+										<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+								<div class="modal-body">
+									<form class="row" th:action="@{/sportify/team/createTeam}"
+										method="post" enctype="multipart/form-data">
+										<div class="col-md-6 form-group">
+											<label>Tên nhóm:</label> <input type="text"
+												class="form-control" name="newNameteam" rows="4"></input>
+											<div id="name-error" class="error-message text-danger"></div>
+
+										</div>
+										<div class=" col-md-6 form-group">
+											<label>Ảnh đại diện:</label> <input type="file"
+												class="form-control" name="newAvatar" rows="4"></input>
+
+										</div>
+										<div class=" col-md-6 form-group">
+											<label>Số liên hệ:</label> <input type="text"
+												class="form-control" name="newContact" rows="4"></input>
+											<div id="contact-error" class="error-message text-danger"></div>
+
+										</div>
+										<div class="col-md-6 form-group">
+											<label>Số Lượng:</label> <input type="number"
+												class="form-control" name="newQuantity" rows="4"></input>
+											<div id="quantity-error" class="error-message text-danger"></div>
+
+										</div>
+										<div class=" form-group col-md-6">
+											<label>Môn thể thao:</label> <select style="width: 100%"
+												class="custom-select form-control" name="newSporttypeid">
+												<option th:each="spt : ${sporttypeList}"
+													th:value="${spt.sporttypeid}" th:text="${spt.categoryname}"></option>
+											</select>
+										</div>
+										<div class="col-md-6 form-group">
+											<label>Mô tả:</label>
+											<textarea class="form-control" name="newDescriptions"
+												rows="4"></textarea>
+										</div>
+										<div class=" col-md-12 modal-footer">
+											<button onclick="validateFormAndSubmit()" type="submit"
+												class="btn btn-primary">Tạo</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-12 row d-flex">
+						<div th:each="teamItem: ${team}"
+							class="col-lg-6 d-flex align-items-stretch ftco-animate">
+							<div class="blog-entry d-md-flex">
+								<img class="block-20 img bg-dark block-19"
+									th:src="@{'/user/images/' + ${teamItem[4]}}" alt="" src="">
+								<div class="text p-4 bg-light d-flex flex-column">
+
+									<h3 th:text="${teamItem[2]}" class="heading mb-3"
+										style="color: #2E7D32; font-weight: bold;">
+										<a href="#"></a>
+									</h3>
+									<div class="d-flex">
+										<p class="lable_team">Ngày lập :</p>
+										<div class="meta">
+											<p class="fa fa-calendar"></p>
+											<span th:text="${#dates.format(teamItem[8], 'dd-MM-yyyy')}"></span>
+										</div>
+									</div>
+
+									<div class="d-flex ">
+										<p class="lable_team">Thành viên :</p>
+										<p th:text="${teamItem[10]}" style="margin-right: 5px"></p>
+										<p style="margin-right: 5px">/</p>
+										<p th:text="${teamItem[3]}" style="margin-right: 5px"></p>
+									</div>
+									<div class="d-flex">
+										<p class="lable_team">Môn thể thao :</p>
+										<p th:text="${teamItem[9]}"></p>
+									</div>
+
+									<div class="d-flex ">
+										<p class="lable_team">Đội trưởng :</p>
+										<p th:text="${teamItem[12]}"></p>
+									</div>
+
+									<div class="d-flex">
+										'
+										<p th:text="${teamItem[6]}" class="limited-length"
+											style="font-style: italic;"></p>
+										'
+									</div>
+									<div th:if="${users != null}"
+										class="submit-section align-self-end mt-auto">
+										<a th:each="teamUser : ${teamUser}"
+											th:if="${#lists.size(teamUser) > 0 && #lists.contains(teamUser[0], teamItem[0])}"
+											th:href="@{/sportify/team/teamdetail/{teamId}/exit(teamId=${teamItem[0]})}"
+											class="btn btn-danger">Rời Team</a> <a
+											th:unless="${#lists.size(teamUser) > 0 && #lists.contains(teamUser, teamItem[0])}"
+											th:href="@{/sportify/team/teamdetail/{teamId}(teamId=${teamItem[0]})}"
+											class="btn btn-success">Vào Team</a>
+									</div>
+									<div th:if="${users == null}"
+										class="submit-section align-self-end mt-auto">
+										<a
+											th:href="@{/sportify/team/teamdetail/{teamId}(teamId=${teamItem[0]})}"
+											class="btn btn-success">Vào đội</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row col-md-12 mt-5">
+					<div class="col text-center">
+						<div class="block-27 ml-5">
+							<ul class="pagination d-flex justify-content-center ml-5">
+								<li class="ml-1 mr-1 mb-5" th:unless="${team.first}"><a
+									th:href="@{/sportify/team(page=${team.number - 1},
+									searchText=${param.searchText},
+									sporttypeid=${param.sporttypeid}, TeamUsername=${param.TeamUsername})}">&laquo;</a></li>
+								<li class="ml-1 mr-1 mb-5"
+									th:each="pageNumber : ${#numbers.sequence(1, team.totalPages)}"
+									th:unless="${team.totalPages <= 1}"><a
+									th:class="${team.number == pageNumber-1} ? 'bg-success text-white' : ''"
+									th:href="@{/sportify/team(page=${pageNumber-1}, searchText=${param.searchText}, sporttypeid=${param.sporttypeid}, TeamUsername=${param.TeamUsername})}"
+									th:text="${pageNumber}"></a></li>
+								<li class="ml-1 mr-1 mb-5" th:unless="${team.last}"><a
+									th:href="@{/sportify/team(page=${team.number + 1}, searchText=${param.searchText}, sporttypeid=${param.sporttypeid} , TeamUsername=${param.TeamUsername})}">&raquo;</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</section>
+
+
+
+
+	<footer class="ftco-footer">
+		<div class="container">
+			<div class="row mb-5">
+				<div class="col-sm-12 col-md">
+					<div class="ftco-footer-widget mb-4">
+						<h2 class="ftco-heading-2 logo">
+							<a href="#">Sportify - Giải Pháp Sân Thể Thao</a>
+						</h2>
+						<p>Nền tảng đa năng cho đặt sân, tạo đội và mua sắm sản phẩm
+							thể thao</p>
+						<ul class="ftco-footer-social list-unstyled mt-2">
+							<li class="ftco-animate"><a href="#"><span
+									class="fa fa-twitter"></span></a></li>
+							<li class="ftco-animate"><a
+								href="https://www.facebook.com/profile.php?id=100094025267338"><span
+									class="fa fa-facebook"></span></a></li>
+							<li class="ftco-animate"><a href="#"><span
+									class="fa fa-instagram"></span></a></li>
+						</ul>
+					</div>
+				</div>
+
+				<div class="col-sm-12 col-md">
+					<div class="ftco-footer-widget mb-4 ml-md-4">
+						<h2 class="ftco-heading-2">Chính sách và điều kiện</h2>
+						<ul class="list-unstyled">
+							<li><a th:href="@{/sportify/chinhsach}"><span
+									class="fa fa-chevron-right mr-2"></span>Chính sách</a></li>
+							<li><a th:href="@{/sportify/quydinh}"><span
+									class="fa fa-chevron-right mr-2"></span>Quy Định & Điều Kiện</a></li>
+
+						</ul>
+					</div>
+				</div>
+				<div class="col-sm-12 col-md">
+					<div class="ftco-footer-widget mb-4">
+						<h2 class="ftco-heading-2">Liên Hệ Nhanh</h2>
+						<ul class="list-unstyled">
+							<li><a th:href="@{/sportify/contact}"><span
+									class="fa fa-chevron-right mr-2"></span>Liên Hệ</a></li>
+
+						</ul>
+					</div>
+				</div>
+				<div class="col-sm-12 col-md">
+					<div class="ftco-footer-widget mb-4">
+						<h2 class="ftco-heading-2">Thông tin liên hệ</h2>
+						<div class="block-23 mb-3">
+							<ul>
+								<li><span class="icon fa fa-map marker"></span><span
+									class="text">Công viên phần mềm Quang QTSC Building 1,
+										Trung, P Q.12, Thành phố Hồ Chí Minh, Việt Nam</span></li>
+								<li><a href="#"><span class="icon fa fa-phone"></span><span
+										class="text">0123456789</span></a></li>
+								<li><a href="#"><span
+										class="icon fa fa-paper-plane pr-4"></span><span class="text">sportify@gmail.com</span></a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="container-fluid px-0 py-5 bg-black">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+
+						<p class="mb-0" style="color: rgba(255, 255, 255, .5);">
+							<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+							Bản quyền &copy;
+							<script>
+								document.write(new Date().getFullYear());
+							</script>
+							Bảo lưu mọi quyền | Mẫu này được thực hiện <i
+								class="fa fa-heart color-danger" aria-hidden="true"></i> bởi <a
+								th:href="@{/sportify/about}" target="_blank">Team Developer
+								Sportify</a>
+							<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</footer>
+
+
+
+	<!-- loader -->
+	<div id="ftco-loader" class="show fullscreen">
+		<svg class="circular" width="48px" height="48px">
+			<circle class="path-bg" cx="24" cy="24" r="22" fill="none"
+				stroke-width="4" stroke="#eeeeee" />
+			<circle class="path" cx="24" cy="24" r="22" fill="none"
+				stroke-width="4" stroke-miterlimit="10" stroke="#F96D00" /></svg>
+	</div>
+
+
+	<script src="/user/js/jquery.min.js"></script>
+	<script src="/user/js/jquery-migrate-3.0.1.min.js"></script>
+	<script src="/user/js/popper.min.js"></script>
+	<script src="/user/js/bootstrap.min.js"></script>
+	<script src="/user/js/jquery.easing.1.3.js"></script>
+	<script src="/user/js/jquery.waypoints.min.js"></script>
+	<script src="/user/js/jquery.stellar.min.js"></script>
+	<script src="/user/js/owl.carousel.min.js"></script>
+	<script src="/user/js/jquery.magnific-popup.min.js"></script>
+	<script src="/user/js/jquery.animateNumber.min.js"></script>
+	<script src="/user/js/scrollax.min.js"></script>
+	<script
+		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+	<script src="/user/js/google-map.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+	<script src="/user/js/main.js"></script>
+	<script>
+		document.addEventListener("DOMContentLoaded", function() {
+			const createTeamButton = document
+					.getElementById("createTeamButton");
+			const descriptionModal = document.getElementById("createModal");
+			const closeCreateButton = document
+					.getElementById("closeCreateButton");
+
+			createTeamButton.addEventListener("click", function() {
+				descriptionModal.classList.remove("d-none");
+			});
+
+			closeCreateButton.addEventListener("click", function() {
+				descriptionModal.classList.add("d-none");
+			});
+		});
+	</script>
+
+	<script>
+		const nameInput = document.getElementsByName('newNameteam')[0];
+		const contactInput = document.getElementsByName('newContact')[0];
+		const quantityInput = document.getElementsByName('newQuantity')[0];
+
+		nameInput.addEventListener('blur', function() {
+			validateName(this);
+		});
+		contactInput.addEventListener('blur', function() {
+			validateContact(this);
+		});
+		quantityInput.addEventListener('blur', function() {
+			validateQuantity(this);
+		});
+
+		function validateName(input) {
+			var value = input.value.trim();
+			var errorDiv = document.getElementById('name-error');
+			if (value === '') {
+				errorDiv.textContent = 'Tên không được để trống';
+				return false;
+			} else {
+				errorDiv.textContent = '';
+				return true;
+			}
+		}
+
+		function validateContact(input) {
+			var value = input.value.trim();
+			var errorDiv = document.getElementById('contact-error');
+
+			if (value === '') {
+				errorDiv.textContent = 'Không được để trống';
+				return false;
+			} else {
+				errorDiv.textContent = '';
+				return true;
+			}
+		}
+
+		function validateQuantity(input) {
+			var value = input.value.trim();
+			var errorDiv = document.getElementById('quantity-error');
+
+			if (value === '') {
+				errorDiv.textContent = 'Không được để trống';
+				return false;
+			} else {
+				errorDiv.textContent = '';
+				return true;
+			}
+		}
+
+		function validateFormAndSubmit() {
+			let isValid = true; // Biến để kiểm tra tính hợp lệ của các hàm kiểm tra
+			const errorMessages = []; // Mảng lưu trữ thông báo lỗi
+
+			// Kiểm tra từng hàm kiểm tra và cập nhật biến isValid
+			isValid = isValid && validateName(nameInput);
+			isValid = isValid && validateContact(contactInput);
+			isValid = isValid && validateQuantity(quantityInput);
+			// Xây dựng mảng thông báo lỗi
+			if (!validateName(nameInput)) {
+				errorMessages.push('không được để trống');
+			}
+
+			if (!validateContact(contactInput)) {
+				errorMessages.push('Vui lòng kiểm tra tên');
+			}
+			if (!validateQuantity(quantityInput)) {
+				errorMessages
+						.push('Mật khẩu không được để trống hoặc phải từ 6 đến 15 ký tự');
+			}
+
+			// Hiển thị thông báo lỗi
+			if (errorMessages.length > 0) {
+				event.preventDefault();
+				const errorMessageContainer = document
+						.getElementById('error-message-container');
+				errorMessageContainer.innerHTML = '<ul><li>'
+						+ errorMessages.join('</li><li>') + '</li></ul>';
+			} else {
+				// Tất cả dữ liệu hợp lệ, thực hiện submit
+				document.querySelector('form').submit();
+			}
+		}
+	</script>
+
+</body>
+</html>

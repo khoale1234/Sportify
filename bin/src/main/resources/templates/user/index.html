@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>SPORTIFY - GIẢI PHÁP SÂN THỂ THAO</title>
+<link rel="icon" href="/user/images/logotitle.png" type="image/x-icon">
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link
+	href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,200;0,300;0,400;0,500;0,700;0,800;1,200;1,300;1,400;1,500;1,700&display=swap"
+	rel="stylesheet">
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/user/css/animate.css">
+<link rel="stylesheet" href="/user/css/owl.carousel.min.css">
+<link rel="stylesheet" href="/user/css/owl.theme.default.min.css">
+<link rel="stylesheet" href="/user/css/magnific-popup.css">
+<link rel="stylesheet" href="/user/css/flaticon.css">
+<link rel="stylesheet" href="/user/css/style.css">
+<style>
+body {
+	background-image: url('/user/images/bgAll.png');
+	background-repeat: repeat;
+	background-size: 100% 100%;
+}
+</style>
+</head>
+
+<body>
+
+		<div class="wrap" style="z-index: 9; position: relative">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-6 d-flex align-items-center">
+					<div class="social-media mr-4 m-1">
+						<p class="mb-0 d-flex">
+							<a href="#"
+								class="d-flex align-items-center justify-content-center"><span
+								class="fa fa-facebook"><i class="sr-only">Facebook</i></span></a> <a
+								href="#"
+								class="d-flex align-items-center justify-content-center"><span
+								class="fa fa-twitter"><i class="sr-only">Twitter</i></span></a> <a
+								href="#"
+								class="d-flex align-items-center justify-content-center"><span
+								class="fa fa-instagram"><i class="sr-only">Instagram</i></span></a>
+							<a href="#"
+								class="d-flex align-items-center justify-content-center"><span
+								class="fa fa-dribbble"><i class="sr-only">Dribbble</i></span></a>
+						</p>
+					</div>
+					<p class="mb-0 phone pl-md-2">
+						<a href="#" class="mr-2"><span class="fa fa-phone mr-1"></span>
+							+00 1234 567</a> <a href="#"><span class="fa fa-paper-plane mr-1"></span>
+							youremail@email.com</a>
+					</p>
+
+				</div>
+
+				<div class="col-md-6 d-flex justify-content-md-end">
+					<!-- check login -->
+					<!-- Thẻ div để hiển thị khi chưa đăng nhập -->
+					<div th:if="${users == null}" class="reg m-1"
+						style="display: block;">
+						<p class="mb-0">
+							<a th:href="@{/sportify/login}" class="mr-2"
+								style="color: white;">Đăng nhập |</a> 
+							<a th:href="@{/sportify/signup}" style="color: white;">Đăng kí</a>
+						</p>
+					</div>
+
+					<!-- Thẻ div để hiển thị khi đã đăng nhập -->
+					<span th:if="${users != null}" class="m-1 mr-2"
+						style="color: white;">Xin chào !</span>
+					<div th:if="${users != null}" class="dropdown m-1"
+						style="display: block;">
+						<a class="dropdown-toggle " id="dropdownMenuAccount"
+							data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<img th:if=${users.image!=null}
+							class="rounded-circle border border-white"
+							th:src="@{'/user/images/' + ${users.image}}" alt=""
+							style="width: 30px; height: 30px;"> <img
+							th:if=${users.image==null}
+							class="rounded-circle border border-white"
+							src="/user/images/noavatar.jpg" alt=""
+							style="width: 30px; height: 30px;"> <span id="nameuser"
+							th:text="${users.firstname} + ' ' + ${users.lastname}"></span>
+						</a>
+						<div class="ml-3 mt-2 dropdown-menu"
+							aria-labelledby="dropdownMenuButton">
+							<a th:href="@{/sportify/profile}" class="dropdown-item">Thông
+								tin</a> <a th:href="@{/sportify/field/profile/historybooking}"
+								class="dropdown-item" href="#">Lịch sử đặt sân</a><a th:href="@{/sportify/order/historyList}"
+								class="dropdown-item" href="#">Lịch sử đặt hàng</a> <a
+								th:if="${authorized.roleid== 'R01' or authorized.roleid== 'R02'}"
+								th:href="@{/sportify/admin}" class="dropdown-item">Quản trị</a>
+							<a th:href="@{/sportify/logoff}" class="dropdown-item">Đăng
+								xuất</a>
+						</div>
+					</div>
+
+					<!-- end check login -->
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<nav
+		class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light"
+		id="ftco-navbar">
+		<div class="container">
+			<a class="navbar-brand" th:href="@{/sportify}"><img
+				src="/user/images/Logo3.png" style="width: 350px;" alt=""></a>
+			
+			<button class="navbar-toggler" type="button" data-toggle="collapse"
+				data-target="#ftco-nav" aria-controls="ftco-nav"
+				aria-expanded="false" aria-label="Toggle navigation">
+				<span class="oi oi-menu"></span> Menu
+			</button>
+
+			<div class="collapse navbar-collapse" id="ftco-nav">
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item"><a th:href="@{/sportify/field}"
+						class="nav-link">Sân</a></li>
+					<li class="nav-item"><a th:href="@{/sportify/team}"
+						class="nav-link">Đội</a></li>
+					<li class="nav-item"><a th:href="@{/sportify/event}"
+						class="nav-link">Tin Tức</a></li>
+					<li class="nav-item"><a th:href="@{/sportify/product}"
+						class="nav-link">Cửa hàng</a></li>
+					<li class="nav-item"><a th:href="@{/sportify/about}"
+						class="nav-link">Về chúng tôi</a></li>
+					<li class="nav-item"><a th:href="@{/sportify/contact}"
+						class="nav-link">Liên hệ</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<!-- END nav -->
+
+	<div class="hero-wrap"
+		style="background-image: url('/user/images/bgSum.jpg');"
+		data-stellar-background-ratio="0.5">
+		<div class="overlay"></div>
+		<div class="container">
+			<div
+				class="row no-gutters slider-text align-items-center justify-content-center">
+				<div class="col-md-8 ftco-animate d-flex align-items-end">
+					<div class="text w-100 text-center">
+
+						<h1 class="mb-2" style="font-size: 100px">
+							<span>Good Sport <br> For Good Health
+							</span>
+						</h1>
+						<p>
+							<a th:href="@{/sportify/field}" class="btn btn-primary py-2 px-4">Đặt Sân Ngay</a> <a
+								th:href="@{/sportify/product}" class="btn btn-white btn-outline-white py-2 px-4">Đi Mua Sắm</a>
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<section class="ftco-intro">
+		<div class="container">
+			<div class="row no-gutters">
+				<div class="col-md-4 d-flex">
+					<div class="intro d-lg-flex w-100 ftco-animate">
+						<div class="icon">
+							<span class="flaticon-support"></span>
+						</div>
+						<div class="text">
+							<h2>Hỗ trợ 24/7</h2>
+							<br>
+							<p>Bạn có thể yên tâm, chúng tôi luôn đồng hành cùng bạn,
+								ngay cả vào cuối tuần và ngày lễ.</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4 d-flex">
+					<div class="intro color-1 d-lg-flex w-100 ftco-animate">
+						<div class="icon">
+							<span class="flaticon-cashback"></span>
+						</div>
+						<div class="text">
+							<h2>Thanh toán với nhiều hình thức</h2>
+							<p>Chúng tôi đáp ứng nhu cầu thanh toán của bạn với sự linh
+								hoạt và tiện lợi. Bạn có thể chọn từ nhiều phương thức thanh
+								toán phù hợp với bạn.</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4 d-flex">
+					<div class="intro color-2 d-lg-flex w-100 ftco-animate">
+						<div class="icon">
+							<span class="flaticon-free-delivery"></span>
+						</div>
+						<div class="text">
+							<h2>Miễn phí giao hàng &amp; Hoàn trả</h2>
+							<p>Chúng tôi cam kết cung cấp dịch vụ giao hàng nhanh chóng
+								và miễn phí cho mọi đơn hàng của bạn. Chúng tôi cũng nhận đổi
+								hoặc hoàn trả một cách dễ dàng và không mất phí.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	
+
+	<section class="ftco-section ftco-no-pb">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-2 col-md-4 ">
+					<div class="sort w-100 text-center ftco-animate">
+						<div class="img"
+							style="background-image: url(/user/images/vot.png);"></div>
+						<h5>Vợt Tennis</h5>
+					</div>
+				</div>
+				<div class="col-lg-2 col-md-4 ">
+					<div class="sort w-100 text-center ftco-animate">
+						<div class="img"
+							style="background-image: url(/user/images/bong.png);"></div>
+						<h5>Bóng Đá</h5>
+					</div>
+				</div>
+				<div class="col-lg-2 col-md-4 ">
+					<div class="sort w-100 text-center ftco-animate">
+						<div class="img"
+							style="background-image: url(/user/images/caulong.png);"></div>
+						<h5>Vợt Cầu Lông</h5>
+					</div>
+				</div>
+				<div class="col-lg-2 col-md-4 ">
+					<div class="sort w-100 text-center ftco-animate">
+						<div class="img"
+							style="background-image: url(/user/images/dothethao.jpg);"></div>
+						<h5>Đồ Thể Thao</h5>
+					</div>
+				</div>
+				<div class="col-lg-2 col-md-4 ">
+					<div class="sort w-100 text-center ftco-animate">
+						<div class="img"
+							style="background-image: url(/user/images/giay.png);"></div>
+						<h5>Giày Thể Thao</h5>
+					</div>
+				</div>
+				<div class="col-lg-2 col-md-4 ">
+					<div class="sort w-100 text-center ftco-animate">
+						<div class="img"
+							style="background-image: url(/user/images/bongro.png);"></div>
+						<h5>Bóng Rổ</h5>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</section>
+
+	<section class="ftco-section">
+		<div class="container">
+			<div class="row justify-content-center pb-5">
+				<div class="col-md-7 heading-section text-center ftco-animate">
+
+					<h2>SÂN NỔI BẬT</h2>
+					<span class="subheading">Top 4 sân được đặt nhiều nhất</span>
+				</div>
+			</div>
+			<div class="row d-flex">
+				<div class="col-lg-6 d-flex align-items-stretch ftco-animate"
+					th:each="f, iterStat : ${fieldList}"
+					th:if="${iterStat.index} &lt; 4">
+					<div class="blog-entry d-flex">
+						<img class="block-20 img" alt=""
+							th:src="@{'/user/images/' + ${f[5]}}">
+						<div class="text p-4 bg-light">
+							<h3 class="heading mb-3">
+								<a th:href="@{/sportify/field/detail/{idField}(idField=${f[0]})}" th:text="${f[2]}"></a>
+							</h3>
+							<p>
+								<span class="text-success font-weight-bold">Giá tiền</span>: <span
+									class="text-danger font-weight-bold"
+									th:text="${#numbers.formatCurrency(f[4])}"></span>
+							</p>
+							<p>
+								<span class="text-success font-weight-bold">Địa chỉ</span>: <span
+									class="text-dark font-weight" th:text="${f[6]}"></span>
+							</p>
+							<a th:href="@{/sportify/field/detail/{idField}(idField=${f[0]})}" class="btn-custom">Chi tiết <span
+								class="fa fa-long-arrow-right"></span></a>
+
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<div class="row justify-content-center">
+				<div class="col-md-4">
+					<a th:href="@{/sportify/field}" class="btn btn-primary d-block">Xem thêm sân
+					</a>
+				</div>
+			</div>
+	</section>
+	<section class="ftco-section">
+		<div class="container">
+			<div class="row justify-content-center pb-5">
+				<div class="col-md-7 heading-section text-center ftco-animate">
+
+					<h2>XU HƯỚNG MUA SẮM</h2>
+					<span class="subheading">Top 4 sản phẩm bán chạy</span>
+				</div>
+			</div>
+			<div class="row d-flex">
+				<div class="col-lg-6 d-flex align-items-stretch ftco-animate"
+					th:each="p : ${topproduct}">
+					<div class="blog-entry d-flex">
+						<img class="block-20 img" alt=""
+							th:src="@{'/user/images/' + ${p[3]}}">
+						<div class="text p-4 bg-light">
+							<h3 class="heading mb-3">
+								<a th:href="@{/sportify/product-single/{productid}(productid=${p[0]})}" th:text="${p[1]}"></a>
+							</h3>
+							<p>
+								<span class="text-success font-weight-bold">Giá tiền</span>: <span
+									class="text-danger font-weight-bold"
+									th:text="${#numbers.formatCurrency(p[4])}"></span>
+							</p>
+							<p>
+								<span class="text-success font-weight-bold">Mô tả</span>: <span
+									class="text-dark font-weight limited-length" th:text="${p[5]}"></span>
+							</p>
+							<a th:href="@{/sportify/product-single/{productid}(productid=${p[0]})}" class="btn-custom">Chi tiết <span
+								class="fa fa-long-arrow-right"></span></a>
+							<p style=" color: #252B48;font-weight:bold; width:50%; padding-left: 4px; margin-top: 30px; border-radius: 10px">
+								<span>Lượt mua:</span>
+								<span th:text="${p[2]}"></span>
+							</p>
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<div class="row justify-content-center">
+				<div class="col-md-4">
+					<a th:href="@{/sportify/product}" class="btn btn-primary d-block">Xem thêm sản phẩm khác
+					</a>
+				</div>
+			</div>
+	</section>
+	<section class="ftco-section testimony-section img"
+		style="background-image: url(/user/images/bgcaunoi.jpg);">
+		<div class="overlay"></div>
+		<div class="container">
+			<div class="row justify-content-center mb-5">
+				<div
+					class="col-md-7 text-center heading-section heading-section-white ftco-animate">
+					<span class="subheading">Câu nói</span>
+					<h2 class="mb-3">Truyền cảm hứng</h2>
+				</div>
+			</div>
+			<div class="row ftco-animate">
+				<div class="col-md-12">
+					<div class="carousel-testimony owl-carousel ftco-owl">
+						<div class="item">
+							<div class="testimony-wrap py-4">
+								<div
+									class="icon d-flex align-items-center justify-content-center">
+									<span class="fa fa-quote-left">
+								</div>
+								<div class="text">
+									<p class="mb-4">“Thành công không phải là bất ngờ. Đó là
+										công việc khó khăn, kiên trì, học hỏi, học tập, hy sinh và hơn
+										hết, tình yêu của những gì bạn đang làm hoặc học tập để làm”.
+									</p>
+									<br> <br>
+									<div class="d-flex align-items-center">
+										<div class="user-img"
+											style="background-image: url(/user/images/pele.png)"></div>
+										<div class="pl-3">
+											<p class="name">Pelé</p>
+											<span class="position">Ngôi sao vĩ đại trên sân cỏ</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="item">
+							<div class="testimony-wrap py-4">
+								<div
+									class="icon d-flex align-items-center justify-content-center">
+									<span class="fa fa-quote-left"></span>
+								</div>
+								<div class="text">
+									<p class="mb-4">“Mỗi năm tôi đều cố gắng phấn đấu với tư
+										cách là một cầu thủ. Và tôi không muốn sự nghiệp của mình đi
+										theo một lối mòn. Tôi luôn cố gắng trong mỗi trận đấu theo mọi
+										cách có thể.”</p>
+									<br> <br>
+									<div class="d-flex align-items-center">
+										<div class="user-img"
+											style="background-image: url(/user/images/messi.png)"></div>
+										<div class="pl-3">
+											<p class="name">Lionel Messi</p>
+											<span class="position">Cầu thủ xuất sắc nhất thế giới.</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="item">
+							<div class="testimony-wrap py-4">
+								<div
+									class="icon d-flex align-items-center justify-content-center">
+									<span class="fa fa-quote-left"></span>
+								</div>
+								<div class="text">
+									<p class="mb-4">"Đã chọn thể thao thì bắt buộc phải nỗ lực
+										và hy sinh, bởi tôi muốn vươn lên đỉnh cao trong sự nghiệp,
+										bởi kỷ lục không bao giờ có giới hạn, nên với tôi ngày hôm nay
+										phải tốt hơn ngày hôm qua."</p>
+									<br>
+									<div class="d-flex align-items-center">
+										<div class="user-img"
+											style="background-image: url(/user/images/anhvien.jpg)"></div>
+										<div class="pl-3">
+											<p class="name">Nguyễn Thị Ánh Viên</p>
+											<span class="position">Vận động viên bơi lội</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="item">
+							<div class="testimony-wrap py-4">
+								<div
+									class="icon d-flex align-items-center justify-content-center">
+									<span class="fa fa-quote-left"></span>
+								</div>
+								<div class="text">
+									<p class="mb-4">"Tôi đã trượt hơn 9000 cú ném trong sự
+										nghiệp của mình. Tôi đã thua gần 300 trận đấu. 26 lần tôi được
+										tin tưởng giao cho cú ném quyết định trận đấu và bỏ lỡ chúng.
+										Tôi đã thất bại hết lần này đến lần khác trong đời mình. Và đó
+										là lý do tôi thành công."</p>
+									<div class="d-flex align-items-center">
+										<div class="user-img"
+											style="background-image: url(/user/images/ro.jpg)"></div>
+										<div class="pl-3">
+											<p class="name">Michael Jordan</p>
+											<span class="position">Cựu cầu thủ bóng rổ thế giới</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="item">
+							<div class="testimony-wrap py-4">
+								<div
+									class="icon d-flex align-items-center justify-content-center">
+									<span class="fa fa-quote-left">
+								</div>
+								<div class="text">
+									<p class="mb-4">"Đừng ngại thất bại, đó là con đường dẫn
+										đến thành công."</p>
+									<br> <br> <br> <br>
+									<div class="d-flex align-items-center">
+										<div class="user-img"
+											style="background-image: url(/user/images/LeBron_James.jpg)"></div>
+										<div class="pl-3">
+											<p class="name">LeBron James</p>
+											<span class="position">Vận động viên bóng rổ Hoa Kỳ</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+
+
+	<section class="ftco-section">
+		<div class="container">
+			<div class="row justify-content-center mb-5">
+				<div class="col-md-7 heading-section text-center ftco-animate">
+					<h2>HOẠT ĐỘNG</h2>
+					<span class="subheading">Trong tháng <span
+						th:text="${#dates.format(#dates.createNow(), 'MM')}"></span></span>
+
+				</div>
+			</div>
+			<div class="row d-flex">
+				<div class="col-lg-6 d-flex align-items-stretch ftco-animate"
+					th:each="e, iterStat : ${eventList}"
+					th:if="${iterStat.index} &lt; 4">
+					<div class="blog-entry d-flex">
+
+						<img class="block-19 block-20 img" alt=""
+							th:src="@{'/user/images/' + ${e[4]}}">
+						<div class="text p-4 bg-light">
+							<div class="meta d-flex">
+								<p class="fa fa-calendar m-2"></p>
+								<span class="m-1" th:text="${e[2]}"></span>
+								<p>|</p>
+								<p class="m-1" th:text="${e[3]}"></p>
+							</div>
+							<h3 th:text="${e[1]}" class="heading mb-3">
+							</h3>
+							<p th:text="${e[5]}" class="limited-length"></p>
+							<a th:href="@{/sportify/eventdetail/{eventid}(eventid=${e[0]})}" class="btn-custom">Chi tiết <span
+								class="fa fa-long-arrow-right"></span></a>
+
+						</div>
+					</div>
+				</div>
+				
+			</div>
+			<div class="row justify-content-center">
+				<div class="col-md-4">
+					<a th:href="@{/sportify/event}" class="btn btn-primary d-block">Xem thêm tin tức
+					</a>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<footer class="ftco-footer">
+		<div class="container">
+			<div class="row mb-5">
+				<div class="col-sm-12 col-md">
+					<div class="ftco-footer-widget mb-4">
+						<h2 class="ftco-heading-2 logo">
+							<a href="#">Sportify - Giải Pháp Sân Thể Thao</a>
+						</h2>
+						<p>Nền tảng đa năng cho đặt sân, tạo đội và mua sắm sản phẩm
+							thể thao</p>
+						<ul class="ftco-footer-social list-unstyled mt-2">
+							<li class="ftco-animate"><a href="#"><span
+									class="fa fa-twitter"></span></a></li>
+							<li class="ftco-animate"><a
+								href="https://www.facebook.com/profile.php?id=100094025267338"><span
+									class="fa fa-facebook"></span></a></li>
+							<li class="ftco-animate"><a href="#"><span
+									class="fa fa-instagram"></span></a></li>
+						</ul>
+					</div>
+				</div>
+
+				<div class="col-sm-12 col-md">
+					<div class="ftco-footer-widget mb-4 ml-md-4">
+						<h2 class="ftco-heading-2">Chính sách và điều kiện</h2>
+						<ul class="list-unstyled">
+							<li><a th:href="@{/sportify/chinhsach}"><span
+									class="fa fa-chevron-right mr-2"></span>Chính sách</a></li>
+							<li><a th:href="@{/sportify/quydinh}"><span
+									class="fa fa-chevron-right mr-2"></span>Quy Định & Điều Kiện</a></li>
+
+						</ul>
+					</div>
+				</div>
+				<div class="col-sm-12 col-md">
+					<div class="ftco-footer-widget mb-4">
+						<h2 class="ftco-heading-2">Liên Hệ Nhanh</h2>
+						<ul class="list-unstyled">
+							<li><a th:href="@{/sportify/contact}"><span
+									class="fa fa-chevron-right mr-2"></span>Liên Hệ</a></li>
+
+						</ul>
+					</div>
+				</div>
+				<div class="col-sm-12 col-md">
+					<div class="ftco-footer-widget mb-4">
+						<h2 class="ftco-heading-2">Thông tin liên hệ</h2>
+						<div class="block-23 mb-3">
+							<ul>
+								<li><span class="icon fa fa-map marker"></span><span
+									class="text">Công viên phần mềm Quang QTSC Building 1,
+										Trung, P Q.12, Thành phố Hồ Chí Minh, Việt Nam</span></li>
+								<li><a href="#"><span class="icon fa fa-phone"></span><span
+										class="text">0123456789</span></a></li>
+								<li><a href="#"><span
+										class="icon fa fa-paper-plane pr-4"></span><span class="text">sportify@gmail.com</span></a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="container-fluid px-0 py-5 bg-black">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+
+						<p class="mb-0" style="color: rgba(255, 255, 255, .5);">
+							<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+							Bản quyền &copy;
+							<script>
+								document.write(new Date().getFullYear());
+							</script>
+							Bảo lưu mọi quyền | Mẫu này được thực hiện <i
+								class="fa fa-heart color-danger" aria-hidden="true"></i> bởi <a
+								th:href="@{/sportify/about}" target="_blank">Team Developer
+								Sportify</a>
+							<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</footer>
+
+
+
+	<!-- loader -->
+	<div id="ftco-loader" class="show fullscreen">
+		<svg class="circular" width="48px" height="48px">
+			<circle class="path-bg" cx="24" cy="24" r="22" fill="none"
+				stroke-width="4" stroke="#eeeeee" />
+			<circle class="path" cx="24" cy="24" r="22" fill="none"
+				stroke-width="4" stroke-miterlimit="10" stroke="#F96D00" />
+		</svg>
+	</div>
+
+
+	<script src="/user/js/jquery.min.js"></script>
+	<script src="/user/js/angular.min.js"></script>
+	<script src="/user/js/jquery-migrate-3.0.1.min.js"></script>
+	<script src="/user/js/popper.min.js"></script>
+	<script src="/user/js/bootstrap.min.js"></script>
+	<script src="/user/js/jquery.easing.1.3.js"></script>
+	<script src="/user/js/jquery.waypoints.min.js"></script>
+	<script src="/user/js/jquery.stellar.min.js"></script>
+	<script src="/user/js/owl.carousel.min.js"></script>
+	<script src="/user/js/jquery.magnific-popup.min.js"></script>
+	<script src="/user/js/jquery.animateNumber.min.js"></script>
+	<script src="/user/js/scrollax.min.js"></script>
+	<script
+		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+	<script src="/user/js/google-map.js"></script>
+	<script src="/user/js/main.js"></script>
+
+</body>
+
+</html>

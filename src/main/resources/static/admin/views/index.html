@@ -1,0 +1,490 @@
+<!-- Header -->
+<div ng-include="'/admin/templates/header.html'"></div>
+<!-- /Header -->
+
+<!-- Sidebar -->
+<div ng-include="'/admin/templates/sidebar.html'"></div>
+<!-- /Sidebar -->
+
+<!-- Page Wrapper -->
+<div class="page-wrapper" ng-controller="DashboardController">
+
+	<!-- Page Content -->
+	<div class="content container-fluid">
+
+		<!-- Page Header -->
+		<div class="page-header">
+			<div class="row">
+				<div class="col-sm-12">
+					<h3 class="page-title">
+						Welcome <strong>{{username}}</strong>!
+					</h3>
+					<ul class="breadcrumb">
+						<li class="breadcrumb-item active">Dashboard</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!-- /Page Header -->
+
+		<div class="row">
+			<div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+				<div class="card dash-widget">
+					<div class="card-body">
+						<span class="dash-widget-icon"><i class="fa fa-user"></i></span>
+						<div class="dash-widget-info">
+							<h3>{{countOrderInDate}}</h3>
+							<span>Phiếu đặt hàng trong ngày</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+				<div class="card dash-widget">
+					<div class="card-body">
+						<span class="dash-widget-icon"><i class="fa fa-usd"></i></span>
+						<div class="dash-widget-info">
+							<h3>{{countBookingInDate}}</h3>
+							<span>Phiếu đặt sân trong ngày</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+				<div class="card dash-widget">
+					<div class="card-body">
+						<span class="dash-widget-icon"><i class="fa fa-diamond"></i></span>
+						<div class="dash-widget-info">
+							<h3>{{countFieldActiving}}</h3>
+							<span>Sân đang hoạt động</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+				<div class="card dash-widget">
+					<div class="card-body">
+						<span class="dash-widget-icon"><i class="fa fa-cubes"></i></span>
+						<div class="dash-widget-info">
+							<h3>{{countProductActive}}</h3>
+							<span>Sản phẩm đang bày bán</span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+		<!-- <div class="row">
+			<div class="col-md-12">
+				<div class="row">
+					<div class="col-md-6 text-center">
+						<div class="card">
+							<div class="card-body">
+								<h3 class="card-title">Tổng danh thu</h3>
+								<div id="bar-charts"></div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6 text-center">
+						<div class="card">
+							<div class="card-body">
+								<h3 class="card-title">Tổng số phiếu</h3>
+								<div id="line-charts"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div> -->
+
+
+		<div class="row">
+			<div class="col-md-12 col-lg-12 col-xl-4 d-flex">
+				<div class="card flex-fill">
+					<div class="card-body">
+						<h4 class="card-title">Thống kê lịch đặt sân trong ngày</h4>
+						<div class="statistics">
+							<div class="row">
+								<div class="col-md-6 col-6 text-center">
+									<div class="stats-box mb-4">
+										<p>Tổng số lịch đặt sân trong ngày</p>
+										<h3>{{thongkebookingtrongngay[0][1]}}</h3>
+									</div>
+								</div>
+								<div class="col-md-6 col-6 text-center"
+									ng-show="kiemDuyet === 'ok'">
+									<div class="stats-box mb-4">
+										<p>Doanh thu</p>
+										<h3>{{formatCurrency(thongkebookingtrongngay[1][2] +
+											(thongkebookingtrongngay[2][2] * 0.3) -
+											(thongkebookingtrongngay[3][2] * 0.3 * 2))}}</h3>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="progress mb-4">
+							<div class="progress-bar bg-purple" role="progressbar"
+								ng-style="{'width': percentDone_ngay}" aria-valuenow="0"
+								aria-valuemin="0" aria-valuemax="100">{{percentDone_ngay}}</div>
+
+							<div class="progress-bar bg-warning" role="progressbar"
+								ng-style="{'width': percentCoc_ngay}" aria-valuenow="0"
+								aria-valuemin="0" aria-valuemax="100">{{percentCoc_ngay}}</div>
+
+							<div class="progress-bar bg-danger" role="progressbar"
+								ng-style="{'width': percentCancel_ngay}" aria-valuenow="0"
+								aria-valuemin="0" aria-valuemax="100">{{percentCancel_ngay}}</div>
+						</div>
+
+						<div>
+							<p>
+								<i class="fa fa-dot-circle-o text-purple mr-2"></i>Hoàn thành <span
+									class="float-right">{{thongkebookingtrongngay[1][1]}}</span>
+							</p>
+							<p>
+								<i class="fa fa-dot-circle-o text-warning mr-2"></i>Đã đặt cọc <span
+									class="float-right">{{thongkebookingtrongngay[2][1]}}</span>
+							</p>
+
+							<p>
+								<i class="fa fa-dot-circle-o text-danger mr-2"></i>Hủy đặt <span
+									class="float-right">{{thongkebookingtrongngay[3][1]}}</span>
+							</p>
+
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-12 col-lg-12 col-xl-4 d-flex">
+				<div class="card flex-fill">
+					<div class="card-body">
+						<h4 class="card-title">Thống kê đơn hàng trong ngày</h4>
+						<div class="statistics">
+							<div class="row">
+								<div class="col-md-6 col-6 text-center">
+									<div class="stats-box mb-4">
+										<p>Tổng số đơn hàng trong ngày</p>
+										<h3>{{thongKeOrderInDay[0][1]}}</h3>
+									</div>
+								</div>
+								<div class="col-md-6 col-6 text-center"
+									ng-show="kiemDuyet === 'ok'">
+									<div class="stats-box mb-4">
+										<p>Doanh thu</p>
+										<h3>{{formatCurrency(thongKeOrderInDay[0][2])}}</h3>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="progress mb-4">
+							<div class="progress-bar bg-purple" role="progressbar"
+								ng-style="{'width': percentOrderDone_ngay}"
+								aria-valuenow="{{percentOrderDone_ngay}}" aria-valuemin="0"
+								aria-valuemax="100">{{percentOrderDone_ngay}}</div>
+
+							<div class="progress-bar bg-warning" role="progressbar"
+								ng-style="{'width': percentOrderFailure_ngay}"
+								aria-valuenow="{{percentOrderFailure_ngay}}" aria-valuemin="0"
+								aria-valuemax="100">{{percentOrderFailure_ngay}}</div>
+						</div>
+
+
+						<div>
+							<p>
+								<i class="fa fa-dot-circle-o text-purple mr-2"></i>Đã thanh toán
+								<span class="float-right">{{thongKeOrderInDay[2][1]}}</span>
+							</p>
+							<p>
+								<i class="fa fa-dot-circle-o text-warning mr-2"></i>Chưa thanh
+								toán <span class="float-right">{{thongKeOrderInDay[1][1]}}</span>
+							</p>
+
+
+
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-12 col-lg-6 col-xl-4 d-flex">
+				<div class="card flex-fill">
+					<div class="card-body">
+						<h4 class="card-title">
+							Góp ý trong ngày của khách hàng trong ngày <span
+								class="badge bg-inverse-danger ml-2">{{countLienHe}}</span>
+						</h4>
+						<div class="leave-info-box" ng-repeat="contact in list3Contact">
+							<div class="media align-items-center">
+								<div class="avatar">
+									<img alt="" src="/user/images/{{contact.users.image}}">
+								</div>
+								<div class="media-body">
+									<div class="text-sm my-0">{{contact.users.firstname + ' '
+										+ contact.users.lastname}}</div>
+								</div>
+							</div>
+							<div class="row align-items-center mt-3">
+								<div class="col-6">
+									<h6 class="mb-0">{{contact.datecontact | date:
+										'dd-MM-yyyy'}}</h6>
+									<span class="text-sm text-muted">{{contact.title}}</span>
+								</div>
+								<div class="col-6 text-right">
+									<span class="badge bg-inverse-danger">{{contact.category}}</span>
+								</div>
+							</div>
+						</div>
+						<div class="load-more text-center">
+							<a class="text-dark" href="/admin/contacts">Xem thêm</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /Statistics Widget -->
+
+		<div class="row" ng-show="kiemDuyet === 'ok'">
+			<div class="col-md-12">
+				<div class="card-group m-b-30">
+					<div class="card">
+						<div class="card-body">
+							<div class="d-flex justify-content-between mb-3">
+								<div>
+									<span class="d-block">Tổng số phiếu đặt sân trong tháng
+										này </span>
+								</div>
+								<div>
+									<span ng-style="{ 'color': colorDatSan }">
+										{{percentPhieuDat}}</span>
+								</div>
+							</div>
+							<h3 class="mb-3">{{tongSoPhieuDatSan2Thang[0][1]}}</h3>
+
+							<p class="mb-0">
+								Tháng trước có <span>{{tongSoPhieuDatSan2Thang[1][1]}}</span> <span>
+									phiếu đặt sân</span>
+							</p>
+
+						</div>
+					</div>
+
+					<div class="card">
+						<div class="card-body">
+							<div class="d-flex justify-content-between mb-3">
+								<div>
+									<span class="d-block">Tổng số phiếu bán hàng trong tháng
+										này</span>
+								</div>
+								<div>
+									<span ng-style="{ 'color': colorOrder }">
+										{{percentOrder}}</span>
+								</div>
+							</div>
+							<h3 class="mb-3">{{tongSoPhieuOrder2Thang[0][1]}}</h3>
+
+							<p class="mb-0">
+								Tháng trước có <span>{{tongSoPhieuOrder2Thang[1][1]}}</span> <span>
+									phiếu bán hàng</span>
+							</p>
+						</div>
+					</div>
+
+					<div class="card">
+						<div class="card-body">
+							<div class="d-flex justify-content-between mb-3">
+								<div>
+									<span class="d-block">Doanh thu đặt sân tháng này</span>
+								</div>
+								<div>
+									<span ng-style="{ 'color': colorDTBooking }">{{percentDTBooking}}</span>
+								</div>
+							</div>
+							<h3 class="mb-3">{{formatCurrency(tongDoanhThuBooking2Month[0][0])}}</h3>
+
+							<p class="mb-0">
+								Tháng trước <span class="text-muted">{{formatCurrency(tongDoanhThuBooking2Month[0][1])}}</span>
+							</p>
+
+						</div>
+					</div>
+
+					<div class="card">
+						<div class="card-body">
+							<div class="d-flex justify-content-between mb-3">
+								<div>
+									<span class="d-block">Doanh thu bán hàng trong tháng này</span>
+								</div>
+								<div>
+									<span ng-style="{ 'color': colorDTOrder }">{{tangtruong}}</span>
+								</div>
+							</div>
+							<h3 class="mb-3">{{formatCurrency(doanhThuOrder2Month[0][0])}}</h3>
+
+							<p class="mb-0">
+								Tháng trước <span class="text-muted">{{formatCurrency(doanhThuOrder2Month[0][1])}}</span>
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Statistics Widget -->
+		<div class="row" ng-show="kiemDuyet === 'ok'">
+			<div class="col-md-6 d-flex">
+				<div class="card card-table flex-fill">
+					<div class="card-header">
+						<h3 class="card-title mb-0">Top 3 sân được đặt nhiều nhất</h3>
+					</div>
+					<div class="card-body">
+						<div class="table-responsive">
+							<table class="table table-nowrap custom-table mb-0">
+								<thead>
+									<tr>
+										<th>#</th>
+										<th>Tên sân</th>
+										<th>Giá sân</th>
+										<th>Số lần đặt</th>
+										<th>Doanh thu</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="top3f in top3SanDatNhieu">
+										<td>{{$index + 1}}</td>
+										<td>{{top3f[0]}}</td>
+										<td>{{formatCurrency(top3f[1])}}</td>
+										<td>{{top3f[2]}}</td>
+										<td>{{formatCurrency(top3f[3])}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="card-footer">
+						<a href="/admin/fields">Xem tất cả sân</a>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6 d-flex">
+				<div class="card card-table flex-fill">
+					<div class="card-header">
+						<h3 class="card-title mb-0">Top 3 sản phẩm bán được nhiều
+							nhất</h3>
+					</div>
+					<div class="card-body">
+						<div class="table-responsive">
+							<table class="table custom-table table-nowrap mb-0">
+								<thead>
+									<tr>
+										<th>#</th>
+
+										<th>Tên sản phẩm</th>
+										<th>Giá sản phẩm</th>
+										<th>Số lượt bán</th>
+										<th>Doanh thu</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="top3pnt in  top3SanPhamBanNhieu">
+										<td>{{$index + 1}}</td>
+
+										<td>{{top3pnt[0]}}</td>
+										<td>{{formatCurrency(top3pnt[1])}}</td>
+										<td>{{top3pnt[2]}}</td>
+										<td>{{formatCurrency(top3pnt[3])}}</td>
+									</tr>
+
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="card-footer">
+						<a href="payments.html">Xem tất cả sản phẩm</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row" ng-show="kiemDuyet === 'ok'">
+			<div class="col-md-6 d-flex">
+				<div class="card card-table flex-fill">
+					<div class="card-header">
+						<h3 class="card-title mb-0">Top 5 khách hàng đặt sân nhiều
+							nhất</h3>
+					</div>
+					<div class="card-body">
+						<div class="table-responsive">
+							<table class="table custom-table mb-0">
+								<thead>
+									<tr>
+										<th>#</th>
+										<th>Họ tên khách hàng</th>
+										<th>Số diện thoại</th>
+										<th>Số lượt đặt sân</th>
+										<th>Doanh thu</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="top5user in top5UserDatSan">
+										<td>{{$index + 1}}</td>
+
+										<td>{{top5user[0] + top5user[1]}}</td>
+										<td>{{top5user[2]}}</td>
+										<td>{{top5user[3]}}</td>
+										<td>{{formatCurrency(top5user[4])}}</td>
+									</tr>
+
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="card-footer">
+						<a href="/admin/accounts">Xem tất cả khách hàng</a>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6 d-flex">
+				<div class="card card-table flex-fill">
+					<div class="card-header">
+						<h3 class="card-title mb-0">Top 5 khách hàng đặt hàng nhiều
+							nhất</h3>
+					</div>
+					<div class="card-body">
+						<div class="table-responsive">
+							<table class="table custom-table mb-0">
+								<thead>
+									<tr>
+										<th>#</th>
+										<th>Họ tên khách hàng</th>
+										<th>Số diện thoại</th>
+										<th>Số lượt đặt sân</th>
+										<th>Doanh thu</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="top5userorder in top5UserOrder">
+										<td>{{$index + 1}}</td>
+
+										<td>{{top5userorder[0] + top5userorder[1]}}</td>
+										<td>{{top5userorder[2]}}</td>
+										<td>{{top5userorder[3]}}</td>
+										<td>{{formatCurrency(top5userorder[4])}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="card-footer">
+						<a href="clients.html">Xem tất cả khách hàng</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	<!-- /Page Content -->
+
+</div>
+<!-- /Page Wrapper -->

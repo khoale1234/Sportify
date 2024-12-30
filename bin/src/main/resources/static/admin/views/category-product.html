@@ -1,0 +1,179 @@
+<!-- Header -->
+<div ng-include="'/admin/templates/header.html'"></div>
+<!-- /Header -->
+
+<!-- Sidebar -->
+<div ng-include="'/admin/templates/sidebar.html'"></div>
+<!-- /Sidebar -->
+
+<!-- Page Wrapper -->
+<div class="page-wrapper" ng-controller="CategoryController">
+
+	<!-- Page Content -->
+	<div class="content container-fluid">
+
+		<!-- Page Header -->
+		<div class="page-header">
+			<div class="row align-items-center">
+				<div class="col">
+					<h3 class="page-title">Loại sản phẩm</h3>
+					<ul class="breadcrumb">
+						<li class="breadcrumb-item"><a href="/admin/index.html">Dashboard</a></li>
+						<li class="breadcrumb-item active">Loại sản phẩm</li>
+					</ul>
+				</div>
+				<div class="col-auto float-right ml-auto">
+					<a href="#" class="btn add-btn" data-toggle="modal" data-target="#add" ng-click="reset()"><i
+							class="fa fa-plus"></i> Thêm loại sản phẩm mới</a>
+
+				</div>
+			</div>
+		</div>
+		<!-- /Page Header -->
+
+		<!-- Search Filter -->
+		<div class="row filter-row">
+
+			<div class="col-sm-6 col-md-3">
+				<div class="form-group form-focus">
+					<input type="text" class="form-control floating" ng-model="searchName">
+					<label class="focus-label">Tên loại sản phẩm</label>
+				</div>
+			</div>
+			
+			<div class="col-sm-6 col-md-3">
+				<a href="#" class="btn btn-success btn-block" ng-click="search()"> Tìm kiếm </a>
+			</div>
+			<div class="col-sm-6 col-md-3">
+				<a href="#" class="btn btn-success btn-block" ng-click="refresh()"> Làm mới</a>
+			</div>
+		</div>
+		<!-- Search Filter -->
+
+		<div class="row">
+			<div class="col-md-12">
+				<div class="table-responsive">
+					<table class="table table-striped custom-table datatable">
+						<thead>
+							<tr>
+								<th>#</th>							
+								<th>Tên loại sản phẩm</th>
+								<th class="text-center no-sort col-md-3">Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="item in items">
+								<td>{{$index + 1}}</td>
+								<td>{{item.categoryname}}</td>
+								<td class="text-center">
+									<button class="btn btn-danger " href="#"
+										data-toggle="modal" data-target="#edit" ng-click="edit(item)">
+										<i class="fa fa-pencil m-r-5"></i> Xem chi tiết
+									</button>
+								
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /Page Content -->
+
+	<!-- Add Employee Modal -->
+	<div id="add" class="modal custom-modal fade" role="dialog">
+		<div class="modal-dialog modal-dialog-centered modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Thêm mới loại sản phẩm</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form>
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="form-group">
+									<label class="col-form-label">Tên loại sản phẩm <span class="text-danger">*</span></label>
+									<input class="form-control" type="text" ng-model="form.categoryname" ng-change="clearErrors()">
+									<errors class="badge badge-danger" ng-repeat="(index, error) in errors"
+										ng-if="error.field === 'categoryname' && index === 0">{{
+										error.message }}</errors>
+								</div>
+							</div>
+						</div>
+
+						<div class="submit-section">
+							<button class="btn btn-primary submit-btn" ng-click="create()">Thêm mới loại sản phẩm</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /Add Employee Modal -->
+
+	<!-- Edit Employee Modal -->
+	<div id="edit" class="modal custom-modal fade" role="dialog">
+		<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Chỉnh sửa loại sản phẩm</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form>
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="form-group">
+									<label class="col-form-label">Tên loại sản phẩm <span class="text-danger">*</span></label>
+									<input class="form-control" type="text" ng-model="form.categoryname" ng-change="clearErrors()">
+									<errors class="badge badge-danger" ng-repeat="(index, error) in errors"
+										ng-if="error.field === 'categoryname' && index === 0">{{
+										error.message }}</errors>
+								</div>
+							</div>
+						</div>
+
+						<div class="submit-section">
+							<button class="btn btn-primary submit-btn" ng-click="update()">Chỉnh sửa loại sản phẩm</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /Edit Employee Modal -->
+
+	<!-- Delete Employee Modal -->
+	<div class="modal custom-modal fade" id="delete" role="dialog">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-body">
+					<div class="form-header">
+						<h3>Xóa loại sản phẩm</h3>
+						<p>Bạn có muốn xóa loại sản phẩm tên <span>{{form.categoryname}}</span> ?</p>
+					</div>
+					<div class="modal-btn delete-action">
+						<div class="row">
+							<div class="col-6">
+								<a href="javascript:void(0);" class="btn btn-primary continue-btn" ng-click="delete(form)">Xóa</a>
+							</div>
+							<div class="col-6">
+								<a href="javascript:void(0);" data-dismiss="modal"
+									class="btn btn-primary cancel-btn">Hủy</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /Delete Employee Modal -->
+	<div id="toast"></div>
+</div>
+<!-- /Page Wrapper -->
