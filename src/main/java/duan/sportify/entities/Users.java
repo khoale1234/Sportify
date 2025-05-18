@@ -42,10 +42,8 @@ public class Users implements Serializable {
     private String     username ;
 
     //--- ENTITY DATA FIELDS 
-    @Pattern(regexp = "^(.{6,})$", message = "{Pattern.users.passwords}")
-    @Pattern(regexp = "^(.{1,15})$", message = "{Pattern.users.passwords}")
-    @NotBlank(message = "{{Pattern.users.passwords}}")
-    @Column(name="passwords", nullable=false, length=16)
+    @NotBlank(message = "{NotBlank.users.passwords}")
+    @Column(name="passwords", nullable=false, length=72)
     private String     passwords ;
     @Pattern(regexp = "^[\\p{L} ]+$", message = "{Pattern.users.firstname}")
     @NotBlank(message = "{NotBlank.users.firstname}")
@@ -76,6 +74,12 @@ public class Users implements Serializable {
     private Boolean    gender ;
     @Column(name="status")
     private Boolean    status ;
+    
+    @Column(nullable = true)
+    private Double latitude;
+
+    @Column(nullable = true)
+    private Double longitude;
 
     //--- ENTITY LINKS ( RELATIONSHIP )
     @JsonIgnore

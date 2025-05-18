@@ -223,28 +223,35 @@ public class PaymentVNPayController {
         
         String signValue = VNPayConfig.hashAllFields(fields);
        
-        // Add transactionStatus to the model
         String transactionStatus;
         
-            if ("00".equals(request.getParameter("vnp_TransactionStatus"))) { // trạng thái thành công từ VNPay
-                transactionStatus = "Thành công";
-                try {
-                	bookingservice.create(savebooking);
-                	bookingdetailservice.create(savebookingdetail);
-                }catch (Exception e) {
-					e.printStackTrace();
-				}
+        if ("00".equals(request.getParameter("vnp_TransactionStatus"))) { 
+            transactionStatus = "Thành công";
+            try {
+          
+                Bookings createdBooking = bookingservice.create(savebooking);
                 
-            } else { // Không thành công
-                transactionStatus = "Không thành công";
+            
+                savebookingdetail.setBookingid(createdBooking.getBookingid());
+                
+
+                bookingdetailservice.create(savebookingdetail);
+                
+                System.out.println("Đã lưu thành công booking ID: " + createdBooking.getBookingid() + " và booking detail");
+            } catch (Exception e) {
+                System.err.println("Lỗi khi lưu booking hoặc booking detail: " + e.getMessage());
+                e.printStackTrace();
             }
-         // Get the vnp_Amount from the fields map
+        } else { 
+            transactionStatus = "Không thành công";
+        }
+         // lấy vnp_Amount từ field map
             String vnp_AmountStr = fields.get("vnp_Amount");
 
-            // Parse the vnp_Amount to double
+            // Chuyển đổi vnp_Amount từ String sang double
             double vnp_Amount = Double.parseDouble(vnp_AmountStr);
 
-            // Divide by 100 to get the actual monetary value
+            // chia cho 100 để chuyển đổi sang VND
             double amountInVND = vnp_Amount / 100;
            
         model.addAttribute("amountInVND",amountInVND); // Tiền thanh toán

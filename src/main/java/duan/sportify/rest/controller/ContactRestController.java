@@ -47,7 +47,7 @@ public class ContactRestController {
 		return ResponseEntity.ok(contactDAO.findAll());
 	}
 	@GetMapping("get/{id}")
-	public ResponseEntity<Contacts> getOne(@PathVariable("id") Integer id) {
+	public ResponseEntity<Contacts> getOne(@PathVariable("id") String id) {
 		if(!contactDAO.existsById(id)) {
 			return ResponseEntity.notFound().build();
 		}
@@ -55,7 +55,7 @@ public class ContactRestController {
 	}
 	
 	@DeleteMapping("delete/{id}")
-	public ResponseEntity<Void> delete(@PathVariable("id") Integer id) {
+	public ResponseEntity<Void> delete(@PathVariable("id") String id) {
 		if(!contactDAO.existsById(id)) {
 			return ResponseEntity.notFound().build();
 		}

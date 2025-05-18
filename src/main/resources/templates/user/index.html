@@ -19,6 +19,14 @@
 <link rel="stylesheet" href="/user/css/flaticon.css">
 <link rel="stylesheet" href="/user/css/style.css">
 <style>
+	df-messenger {
+	  --df-messenger-button-titlebar-color: #a8e6a2;  /* Màu tiêu đề + icon */
+	  --df-messenger-button-titlebar-font-color: black; /* Màu chữ trên icon */
+	  --df-messenger-chat-background-color: #ffffff; /* nền hộp chat */
+	  --df-messenger-font-color: #000000; /* màu chữ chat */
+	}
+  </style>
+<style>
 body {
 	background-image: url('/user/images/bgAll.png');
 	background-repeat: repeat;
@@ -138,7 +146,58 @@ body {
 		</div>
 	</nav>
 	<!-- END nav -->
+	<script>
 
+    window.onload = function () {
+     
+        const userElement = document.getElementById('nameuser');
+        
+        if (userElement) {
+            console.log("Người dùng đã đăng nhập, bắt đầu lấy vị trí...");
+            
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    const latitude = position.coords.latitude;
+                    const longitude = position.coords.longitude;
+                    
+                    console.log("Đã lấy được vị trí:", latitude, longitude);
+
+                    // Gửi tọa độ đến backend qua API
+                    fetch('/sportify/dialogflow/store-geolocation', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            queryResult: {
+                                intent: {
+                                    displayName: "SaveCoordinates"
+                                },
+                                parameters: {
+                                    latitude: latitude,
+                                    longitude: longitude
+                                }
+                            }
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log("Dữ liệu đã gửi thành công:", data);
+                    })
+                    .catch(error => {
+                        console.error('Lỗi khi gửi tọa độ:', error);
+                    });
+                }, function (error) {
+                    console.error("Lỗi khi lấy vị trí:", error);
+                });
+            } else {
+                console.error("Trình duyệt của bạn không hỗ trợ Geolocation.");
+            }
+        } else {
+            console.log("Người dùng chưa đăng nhập, không lấy vị trí.");
+        }
+    };
+</script>
 	<div class="hero-wrap"
 		style="background-image: url('/user/images/bgSum.jpg');"
 		data-stellar-background-ratio="0.5">
@@ -529,8 +588,16 @@ body {
 				</div>
 			</div>
 		</div>
+		<script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+	<df-messenger
+		intent="WELCOME"
+		chat-title="Sportify Chatbot"
+		agent-id="a84aa4fc-aa1b-400f-b6ea-91763c3c74ab"
+		language-code="vi"
+		th:user-id="${users != null ? users.username : ''}"
+	></df-messenger>
 	</section>
-
+	
 	<footer class="ftco-footer">
 		<div class="container">
 			<div class="row mb-5">
@@ -545,14 +612,13 @@ body {
 							<li class="ftco-animate"><a href="#"><span
 									class="fa fa-twitter"></span></a></li>
 							<li class="ftco-animate"><a
-								href="https://www.facebook.com/profile.php?id=100094025267338"><span
+								href="#"><span
 									class="fa fa-facebook"></span></a></li>
 							<li class="ftco-animate"><a href="#"><span
 									class="fa fa-instagram"></span></a></li>
 						</ul>
 					</div>
 				</div>
-
 				<div class="col-sm-12 col-md">
 					<div class="ftco-footer-widget mb-4 ml-md-4">
 						<h2 class="ftco-heading-2">Chính sách và điều kiện</h2>
@@ -581,8 +647,7 @@ body {
 						<div class="block-23 mb-3">
 							<ul>
 								<li><span class="icon fa fa-map marker"></span><span
-									class="text">Công viên phần mềm Quang QTSC Building 1,
-										Trung, P Q.12, Thành phố Hồ Chí Minh, Việt Nam</span></li>
+									class="text">#</span></li>
 								<li><a href="#"><span class="icon fa fa-phone"></span><span
 										class="text">0123456789</span></a></li>
 								<li><a href="#"><span

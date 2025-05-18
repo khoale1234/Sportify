@@ -1,10 +1,9 @@
 package duan.sportify.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
-
 import duan.sportify.entities.Field;
-import duan.sportify.entities.Shifts;
 
 
 
@@ -32,7 +31,10 @@ public interface FieldService {
 	String findNameSporttypeById(Integer id);
 	
 	String findIdSporttypeById(Integer id);
-	Boolean checkAvailableByTimeAndDate(String fieldName, int shiftId, String playDate);
+	Boolean checkAvailableByTimeAndDate(String fieldName, int shiftId, LocalDate playDate);
 	Field findByFieldName(String fieldName);
-	List<Field> suggestFields(String username);
+	List<Field> suggestFieldsByHistory(String username);
+	List<Field> findPopularFields();
+
+	List<Field> findFieldsNearUser(double userLat, double userLon, double maxDistance, String sportTypeId);
 }

@@ -16,7 +16,6 @@ import duan.sportify.dao.FieldDAO;
 import duan.sportify.dao.OrderDAO;
 import duan.sportify.dao.ProductDAO;
 import duan.sportify.dao.UserDAO;
-import duan.sportify.entities.Bookingdetails;
 import duan.sportify.entities.Contacts;
 
 @CrossOrigin(origins = "*")

@@ -22,4 +22,5 @@ public interface SportTypeDAO extends JpaRepository<Sporttype, String>{
 	@Query(value = "select * FROM sporttype\r\n"
 			+ "WHERE (categoryname LIKE %:categoryname% OR :categoryname IS NULL)", nativeQuery = true)
 	List<Sporttype> searchSport(@Param("categoryname") Optional<String> categoryname);
+	Sporttype findByCategoryname(String categoryname);
 }

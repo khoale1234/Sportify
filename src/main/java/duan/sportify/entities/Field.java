@@ -16,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -84,6 +85,14 @@ public class Field implements Serializable {
     @OneToMany(mappedBy="field")
     private List<Bookingdetails> listOfBookingdetails ; 
 
+    @Column(nullable = true)
+    private double latitude;
+
+    @Column(nullable = true)
+    private double longitude;
+
+    @Transient
+    private double distance; // Khoảng cách tạm thời (không lưu vào DB)
 
    
 

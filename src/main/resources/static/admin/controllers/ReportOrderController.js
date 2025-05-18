@@ -168,7 +168,7 @@ app.controller('ReportOrderController', function($scope, $http, $location) {
 						data: barChartData,
 						xkey: 'y',
 						ykeys: ['a', 'b', 'c'],
-						labels: ['Tổng số phiếu đặt sân', 'Tổng số phiếu đặt hàng chưa thanh toán', 'Tổng số phiếu đặt hàng hoàn thành'],
+						labels: ['Tổng số phiếu đặt hàng', 'Tổng số phiếu đặt hàng chưa thanh toán', 'Tổng số phiếu đặt hàng hoàn thành'],
 						lineColors: ['green', 'red', 'blue'],
 						lineWidth: '1px',
 						barColors: ['green', 'red', 'blue'],
@@ -213,7 +213,7 @@ app.controller('ReportOrderController', function($scope, $http, $location) {
 						data: lineChartData,
 						xkey: 'y',
 						ykeys: ['a', 'b', 'c'],
-						labels: ['Tổng số phiếu đặt sân', 'Tổng số phiếu đặt hàng chưa thanh toán', 'Tổng số phiếu đặt hàng hoàn thành'],
+						labels: ['Tổng số phiếu đặt hàng', 'Tổng số phiếu đặt hàng chưa thanh toán', 'Tổng số phiếu đặt hàng hoàn thành'],
 						lineColors: ['green', 'red', 'blue'],
 						lineWidth: '3px',
 						xLabels: 'y', // giữ nguyên thư tự cột y

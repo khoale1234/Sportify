@@ -138,7 +138,7 @@ public class mail_Contrain {
 				+ "              <table role=\"presentation\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;\" width=\"100%\">\r\n"
 				+ "                <tr>\r\n"
 				+ "                  <td class=\"content-block\" style=\"font-family: sans-serif; vertical-align: top; padding-bottom: 10px; padding-top: 10px; color: #999999; font-size: 12px; text-align: center;\" valign=\"top\" align=\"center\">\r\n"
-				+ "                    <span class=\"apple-link\" style=\"color: #999999; font-size: 12px; text-align: center;\"> Công viên phần mềm Quang QTSC Building 1, Trung, P Q.12, Thành phố Hồ Chí Minh, Việt Nam</span>\r\n"
+				+ "                    <span class=\"apple-link\" style=\"color: #999999; font-size: 12px; text-align: center;\"> #</span>\r\n"
 				+ "                    \r\n"
 				+ "                  </td>\r\n"
 				+ "                </tr>\r\n"

@@ -31,7 +31,17 @@
 
 <link rel="stylesheet" href="/user/css/flaticon.css">
 <link rel="stylesheet" href="/user/css/style.css">
+<script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+<link rel="stylesheet" href="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.css?v=1">
 </head>
+<style>
+	df-messenger {
+	  --df-messenger-button-titlebar-color: #a8e6a2;  /* Màu tiêu đề + icon */
+	  --df-messenger-button-titlebar-font-color: black; /* Màu chữ trên icon */
+	  --df-messenger-chat-background-color: #ffffff; /* nền hộp chat */
+	  --df-messenger-font-color: #000000; /* màu chữ chat */
+	}
+  </style>
 <style>
 /* Định nghĩa CSS tùy chỉnh để làm mờ các ngày đã qua */
 /* Sử dụng pseudo-class :out-of-range để làm mờ các ngày đã qua */
@@ -191,7 +201,7 @@ body {
 						style="color: #187498; font-family: time-new-roman; font-weight: 600; padding-left: 0px">Tìm
 						kiếm sân trống</h4>
 				</div>
-
+			
 
 				<form th:action="@{/sportify/field/search}" method="post"
 					class=" mb-4 pb-4 d-flex justify-content-center col-11 ">
@@ -333,14 +343,14 @@ body {
 							<li class="ftco-animate"><a href="#"><span
 									class="fa fa-twitter"></span></a></li>
 							<li class="ftco-animate"><a
-								href="https://www.facebook.com/profile.php?id=100094025267338"><span
+								href="#"><span
 									class="fa fa-facebook"></span></a></li>
 							<li class="ftco-animate"><a href="#"><span
 									class="fa fa-instagram"></span></a></li>
 						</ul>
 					</div>
 				</div>
-
+				
 				<div class="col-sm-12 col-md">
 					<div class="ftco-footer-widget mb-4 ml-md-4">
 						<h2 class="ftco-heading-2">Chính sách và điều kiện</h2>
@@ -369,8 +379,7 @@ body {
 						<div class="block-23 mb-3">
 							<ul>
 								<li><span class="icon fa fa-map marker"></span><span
-									class="text">Công viên phần mềm Quang QTSC Building 1,
-										Trung, P Q.12, Thành phố Hồ Chí Minh, Việt Nam</span></li>
+									class="text">#</span></li>
 								<li><a href="#"><span class="icon fa fa-phone"></span><span
 										class="text">0123456789</span></a></li>
 								<li><a href="#"><span
@@ -414,6 +423,13 @@ body {
 		src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
 	<script src="/user/js/main.js"></script>
 	<script src="/user/jscode/favoriteHeart.js"></script>
+	<df-messenger
+		intent="WELCOME"
+		chat-title="Sportify Chatbot"
+		agent-id="a84aa4fc-aa1b-400f-b6ea-91763c3c74ab"
+		language-code="vi"
+		th:user-id="${users != null ? users.username : ''}">
+	</df-messenger>
 	<script>
 		var dateInput = document.getElementById("dateInput");
 

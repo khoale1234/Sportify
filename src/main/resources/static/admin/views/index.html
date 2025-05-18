@@ -430,7 +430,7 @@
 									<tr ng-repeat="top5user in top5UserDatSan">
 										<td>{{$index + 1}}</td>
 
-										<td>{{top5user[0] + top5user[1]}}</td>
+										<td>{{top5user[0] +" "+top5user[1]}}</td>
 										<td>{{top5user[2]}}</td>
 										<td>{{top5user[3]}}</td>
 										<td>{{formatCurrency(top5user[4])}}</td>
@@ -467,7 +467,7 @@
 									<tr ng-repeat="top5userorder in top5UserOrder">
 										<td>{{$index + 1}}</td>
 
-										<td>{{top5userorder[0] + top5userorder[1]}}</td>
+										<td>{{top5userorder[0] +" "+top5userorder[1]}}</td>
 										<td>{{top5userorder[2]}}</td>
 										<td>{{top5userorder[3]}}</td>
 										<td>{{formatCurrency(top5userorder[4])}}</td>
@@ -485,6 +485,5 @@
 
 	</div>
 	<!-- /Page Content -->
-
 </div>
 <!-- /Page Wrapper -->

@@ -8,6 +8,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import duan.sportify.service.MailerService;
 import duan.sportify.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import duan.sportify.dao.UserDAO;
 import duan.sportify.DTO.MailInfo;
 import duan.sportify.dao.AuthorizedDAO;
@@ -36,7 +38,7 @@ import java.util.Random;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
+@Slf4j
 @Controller
 public class SecurityController {
 	@Autowired
@@ -47,7 +49,9 @@ public class SecurityController {
 	
 	@Autowired
 	AuthorizedDAO authorizedDAO;
-		
+	
+	@Autowired
+	BCryptPasswordEncoder passwordEncoder;
 	List<Users> listUser = new ArrayList<>();
 	@RequestMapping("/sportify/login")
     public String loginForm(Model model) {
@@ -66,6 +70,8 @@ public class SecurityController {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String username = authentication.getName();
 		session.setAttribute("username", username);
+		String usernameSession= (String) session.getAttribute("username");
+		log.info(usernameSession);
 		return "redirect:/sportify";
 	}
 
@@ -112,6 +118,7 @@ public class SecurityController {
 		newUser.setLastname(lastnameSignUp);
 		newUser.setFirstname(firstnameSignUp);
 		newUser.setUsername(usernameSignUp);
+		// Lưu mật khẩu trực tiếp vào DB
 		newUser.setPasswords(passwordSignUp);
 		newUser.setPhone(phoneSignUp);
 		newUser.setEmail(emailSignUp);

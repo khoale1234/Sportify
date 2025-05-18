@@ -22,6 +22,16 @@
 
 <link rel="stylesheet" href="/user/css/flaticon.css">
 <link rel="stylesheet" href="/user/css/style.css">
+<script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+<link rel="stylesheet" href="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.css?v=1">
+<style>
+	df-messenger {
+	  --df-messenger-button-titlebar-color: #a8e6a2;  /* Màu tiêu đề + icon */
+	  --df-messenger-button-titlebar-font-color: black; /* Màu chữ trên icon */
+	  --df-messenger-chat-background-color: #ffffff; /* nền hộp chat */
+	  --df-messenger-font-color: #000000; /* màu chữ chat */
+	}
+  </style>
 <style>
 	p{
 		font-size:large;
@@ -159,7 +169,13 @@
 			</div>
 		</div>
 	</section>
-
+	<df-messenger
+	intent="WELCOME"
+	chat-title="Sportify Chatbot"
+	agent-id="a84aa4fc-aa1b-400f-b6ea-91763c3c74ab"
+	language-code="vi"
+	th:user-id="${users != null ? users.username : ''}"
+	></df-messenger>
 	<section class="ftco-intro">
 		<div class="container">
 			<div class="row no-gutters">
@@ -319,7 +335,7 @@
 						<ul class="ftco-footer-social list-unstyled mt-2">
 							<li class="ftco-animate"><a href="#"><span
 									class="fa fa-twitter"></span></a></li>
-							<li class="ftco-animate"><a href="https://www.facebook.com/profile.php?id=100094025267338"><span
+							<li class="ftco-animate"><a href="#"><span
 									class="fa fa-facebook"></span></a></li>
 							<li class="ftco-animate"><a href="#"><span
 									class="fa fa-instagram"></span></a></li>

@@ -19,8 +19,8 @@ public class VNPayConfig {
 	  public static String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
 	    public static String vnp_Returnurl = "http://localhost:8080/sportify/checkoutResult";
 	    public static String vnp_Returnurl2 = "http://localhost:8080/sportify/checkoutResult";
-	    public static String vnp_TmnCode = "6KDIJMJY";
-	    public static String vnp_HashSecret = "WEDMV7IT6JRTZH8BDSXILAYXU49159JT";
+	    public static String vnp_TmnCode = "VNV67P4Y";
+	    public static String vnp_HashSecret = "4HA3L1ZEUO38GHH74FQG5R69NOKKGZSZ";
 	    public static String vnp_Version = "2.1.0";
 	    public static String vnp_Command = "pay";
 	    public static String vnp_apiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction";

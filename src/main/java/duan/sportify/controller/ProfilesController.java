@@ -3,6 +3,8 @@ package duan.sportify.controller;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import java.nio.file.Paths;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,8 @@ public class ProfilesController {
 	UserDAO userDAO;
 	@Autowired
 	AuthorizedService authorzizedservice;
+	@Autowired
+	BCryptPasswordEncoder passwordEncoder;
 	
 	String username = null;
 	Users profiles ;
@@ -44,12 +48,17 @@ public class ProfilesController {
 		String roleuserOnl ;
 		if (username != null) {
 			profiles = userService.findById(username);
-			Authorized role = authorzizedservice.findAllAuthorized(username);
-			if(role.getRoleid().equals("R01")) {
-				roleuserOnl = "Quản Trị Viên";
-			}else if(role.getRoleid().equals("R02")) {
-				roleuserOnl = "Nhân viên nội bộ";
-			}else {
+			List<Authorized> roleList = authorzizedservice.findAllAuthorized(username);
+			if (!roleList.isEmpty()) {
+				Authorized role = roleList.get(0);
+				if(role.getRoleid().equals("R01")) {
+					roleuserOnl = "Quản Trị Viên";
+				}else if(role.getRoleid().equals("R02")) {
+					roleuserOnl = "Nhân viên nội bộ";
+				}else {
+					roleuserOnl = "Khách hàng";
+				}
+			} else {
 				roleuserOnl = "Khách hàng";
 			}
 			model.addAttribute("roleuserOnl",roleuserOnl);
@@ -108,9 +117,11 @@ public class ProfilesController {
 		
 		if (username != null) {
 		    if (newpassword.isEmpty() || confirmpassword.isEmpty() || !newpassword.equals(confirmpassword)) {
-		        updateUser.setPasswords(passwords); // Sử dụng mật khẩu cũ để cập nhật
+		        // Giữ nguyên mật khẩu cũ
+		        updateUser.setPasswords(passwords);
 		    } else {
-		        updateUser.setPasswords(newpassword); // Cập nhật mật khẩu mới
+		        // Cập nhật mật khẩu mới
+		        updateUser.setPasswords(newpassword);
 		    }
 		} else {
 		    // Xử lý khi không tìm thấy người dùng

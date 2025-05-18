@@ -2,6 +2,7 @@ package duan.sportify.dao;
 
 
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,7 +11,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import duan.sportify.entities.Field;
-import duan.sportify.entities.Sporttype;
 
 
 @SuppressWarnings("unused")
@@ -55,29 +55,46 @@ public interface FieldDAO extends JpaRepository<Field, Integer>{
 			+ "FROM field\r\n"
 			+ "WHERE status = 1;", nativeQuery = true)
 	int countFieldActiving();
-	@Query(value = "SELECT f.* "
-        + "FROM field f "
-        + "LEFT JOIN bookingdetails bd "
-        + "    ON f.fieldid = bd.fieldid "
-        + "    AND bd.playdate = :playDate "
-        + "    AND bd.shiftid = :shiftId "
-        + "WHERE bd.fieldid IS NULL "
-        + "  AND f.namefield LIKE :fieldName "
-        + "  AND f.status = 1", 
-        nativeQuery = true)
+	@Query(value = """
+		SELECT f.* 
+		FROM field f
+		WHERE f.namefield = :fieldName
+		  AND f.status = 1
+		  AND NOT EXISTS (
+			  SELECT 1 
+			  FROM bookingdetails bd
+			  WHERE bd.fieldid = f.fieldid
+				AND bd.playdate = :playDate
+				AND bd.shiftid = :shiftId
+		  )
+		""", nativeQuery = true)	
 	Field findAvailableFieldsByShiftAndDate(
     @Param("fieldName") String fieldName,
     @Param("shiftId") int shiftId,
-    @Param("playDate") String playDate);
+    @Param("playDate") LocalDate playDate);
+
 	Field findFieldByNamefield(String namefield);
-	@Query(value = "SELECT f.fieldid, f.namefield, COUNT(*) AS totalBookings " +
-	"FROM bookings b " +
-	"JOIN bookingdetails bd ON b.bookingid = bd.bookingid " +
-	"JOIN fields f ON bd.fieldid = f.fieldid " +
-	"WHERE b.username = :username " +
-	"GROUP BY f.fieldid, f.namefield " +
-	"ORDER BY totalBookings DESC, MAX(bd.playdate) DESC " +
-	"LIMIT 3", 
-	nativeQuery = true)
+	@Query(value = """
+    SELECT f.*
+    FROM bookings b
+    JOIN bookingdetails bd ON b.bookingid = bd.bookingid
+    JOIN field f ON bd.fieldid = f.fieldid
+    WHERE b.username = :username
+    GROUP BY f.fieldid
+    ORDER BY COUNT(*) DESC, MAX(bd.playdate) DESC
+    LIMIT 3
+""", nativeQuery = true)
 	List<Field> findSuggestedFieldsByUsername(@Param("username") String username);
+	@Query(value = """
+    SELECT f.*
+    FROM field f
+    JOIN bookingdetails bd ON f.fieldid = bd.fieldid
+    JOIN bookings b ON bd.bookingid = b.bookingid
+    WHERE f.status = 1
+    GROUP BY f.fieldid
+    ORDER BY COUNT(b.bookingid) DESC
+    LIMIT 3
+""", nativeQuery = true)
+	List<Field> findPopularFields();
+
 }

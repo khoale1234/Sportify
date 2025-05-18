@@ -1,5 +1,6 @@
 package duan.sportify.service.impl;
 
+import java.time.LocalTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,5 +67,9 @@ public class ShiftServiceImpl implements ShiftService{
 	@Override
 	public Shifts findShiftByName(String name){
 		return shiftDAO.findShiftByName(name);
+	}
+	@Override
+	public Shifts findShiftByTime(LocalTime inputTime){
+		return shiftDAO.findShiftsByTime(inputTime);
 	}
 }

@@ -7,14 +7,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import duan.sportify.entities.Products;
 import duan.sportify.entities.Users;
 
 public interface UserDAO extends JpaRepository<Users, String>{
 	@Query(value="SELECT COUNT(*) FROM users;", nativeQuery = true)
 	List<Object> CountUser();
 	
-	@Query(value = "SELECT * FROM sportify.users WHERE username like :usernameSignup", nativeQuery = true)
+	@Query(value = "SELECT * FROM sportify.users WHERE username = :usernameSignup", nativeQuery = true)
 	Users findAcc(String usernameSignup);
 	// search admin
 	@Query(value = "SELECT DISTINCT  users.*\r\n"
@@ -31,7 +30,7 @@ public interface UserDAO extends JpaRepository<Users, String>{
 									@Param("role") String role);
 	
 	@Query(value = "SELECT firstname, lastname, phone, email, address FROM Users WHERE username = :username", nativeQuery = true)
-	Object findByUsername(@Param("username") String username);
+	Users findByUsername(@Param("username") String username);
 
 	
 }

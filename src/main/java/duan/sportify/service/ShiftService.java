@@ -1,5 +1,7 @@
 package duan.sportify.service;
 
+import java.sql.Time;
+import java.time.LocalTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -24,4 +26,5 @@ public interface ShiftService {
 	
 	List<Shifts> findShiftsByName(String name);
 	Shifts findShiftByName(String name);
+	Shifts findShiftByTime(LocalTime inputTime);
 }

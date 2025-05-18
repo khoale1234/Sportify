@@ -49,9 +49,24 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public Object findByUsername(String username) {
+	public Users findByUsername(String username) {
 		// TODO Auto-generated method stub
 		return userDAO.findByUsername(username);
+	}
+
+	@Override
+	public void updateUserLocation(String username, double latitude, double longitude) {
+		try {
+			Users user = userDAO.findById(username).orElse(null);
+			if (user != null) {
+				user.setLatitude(latitude);
+				user.setLongitude(longitude);
+				userDAO.save(user);
+			}
+		} catch (Exception e) {
+			// Log lỗi và tiếp tục
+			e.printStackTrace();
+		}
 	}
 	
 }

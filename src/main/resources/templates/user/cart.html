@@ -34,6 +34,15 @@
 	src="https://cdn.jsdelivr.net/npm/underscore@1.13.6/underscore-umd-min.js"></script>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+	<script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+	<link rel="stylesheet" href="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.css?v=1">
+	<df-messenger
+	intent="WELCOME"
+	chat-title="Sportify Chatbot"
+	agent-id="a84aa4fc-aa1b-400f-b6ea-91763c3c74ab"
+	language-code="vi"
+	th:user-id="${users != null ? users.username : ''}">
+</df-messenger>
 <style>
 body {
 	background-image: url('/user/images/bgAll.png');
@@ -330,7 +339,7 @@ body {
 							<li class="ftco-animate"><a href="#"><span
 									class="fa fa-twitter"></span></a></li>
 							<li class="ftco-animate"><a
-								href="https://www.facebook.com/profile.php?id=100094025267338"><span
+								href="#"><span
 									class="fa fa-facebook"></span></a></li>
 							<li class="ftco-animate"><a href="#"><span
 									class="fa fa-instagram"></span></a></li>
@@ -366,8 +375,7 @@ body {
 						<div class="block-23 mb-3">
 							<ul>
 								<li><span class="icon fa fa-map marker"></span><span
-									class="text">Công viên phần mềm Quang QTSC Building 1,
-										Trung, P Q.12, Thành phố Hồ Chí Minh, Việt Nam</span></li>
+									class="text">#</span></li>
 								<li><a href="#"><span class="icon fa fa-phone"></span><span
 										class="text">0123456789</span></a></li>
 								<li><a href="#"><span

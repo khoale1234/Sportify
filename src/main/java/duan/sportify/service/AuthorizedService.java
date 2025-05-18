@@ -22,5 +22,5 @@ public interface AuthorizedService {
 	
 	Authorized findById(Integer id);
 	
-	Authorized findAllAuthorized(String username);
+	List<Authorized> findAllAuthorized(String username);
 }

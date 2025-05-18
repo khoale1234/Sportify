@@ -3,6 +3,8 @@ package duan.sportify.controller;
 import java.io.IOException;
 import java.util.Random;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -28,6 +30,8 @@ public class ForgotpassController {
 	MailerService mailer; // Service gửi mail
 	@Autowired
 	UserService userService; // Service user
+	@Autowired
+	BCryptPasswordEncoder passwordEncoder; // Service mã hóa mật khẩu
 	// Hàm random OTP 6 ký tự
 	public static int generateRandomCode(int length) {
         Random random = new Random();
